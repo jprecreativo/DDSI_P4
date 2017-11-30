@@ -111,7 +111,7 @@ public class Login extends Screen
         
         try
         {   
-            new Opciones(new conexionOracle(tf_Username.getText(), String.valueOf(pf_Pass.getPassword())));
+            new Opciones(new conexionOracle(tf_Username.getText(), new String(pf_Pass.getPassword())));
         } 
 
         catch (ClassNotFoundException | SQLException e) 

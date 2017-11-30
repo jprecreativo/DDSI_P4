@@ -170,7 +170,7 @@ public class InsertarExperto extends Screen
                                  tf_especialidad.getText());
         
         
-        if(new manejaExperto(co).insertaExperto(ex))
+        if(new manejaExperto().insertaExperto(ex))
             JOptionPane.showMessageDialog(this, "Experto insertado con éxito.", "Inserción realizada", JOptionPane.INFORMATION_MESSAGE);
         
         else

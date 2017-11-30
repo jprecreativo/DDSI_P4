@@ -1,29 +1,48 @@
 package controlador;
 
+import java.sql.CallableStatement;
 import modelo.experto;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 
 
 public class manejaExperto {
-    // Se crea un objeto de tipo "conexionOracle"
-    conexionOracle co = null;
+    
     
     // Se crea el PreparedStatement como atributo de la clase manejaExperto para
     // utilizarlo en los diferentes métodos
     PreparedStatement ps = null;
     
-
-    /**
-    * Implementa operaciones sobre la tabla EXPERTO
-    * @param c conexión con Oracle
-    */    
-    public manejaExperto(conexionOracle c) 
+    /***
+     * 
+     * @param s
+     * @return 
+     * @throws java.sql.SQLException 
+     */
+    public int sexoExperto(String s) throws SQLException
     {
-      co = c;
+        /* CallableStatement fSexoExperto = conexionOracle.co.prepareCall("{ ? = CALL FSEXOEXPERTO(?) }");
+        
+        fSexoExperto.setString(2, s);
+        fSexoExperto.registerOutParameter(1, Types.NUMERIC);
+        fSexoExperto.executeUpdate();
+        
+        return fSexoExperto.getInt(1); */
+        
+        ps = conexionOracle.co.prepareStatement("SELECT FSEXOEXPERTO(?) FROM DUAL");
+        
+        ps.setString(1, s);
+        
+        ResultSet sexo = ps.executeQuery();
+
+        sexo.next();
+        
+        return sexo.getInt(1);
     }
+    
      /**
     * Devuelve una lista con todos los expertos cuyo país se pase por parámetro
     * @param pais
@@ -32,10 +51,16 @@ public class manejaExperto {
     */
     public ArrayList<experto> listaExpertosPorPais(String pais) throws SQLException 
     {
-        ps = conexionOracle.co.prepareStatement("SELECT * FROM EXPERTO WHERE PAIS = ?");
+        if("...".equals(pais))
+            ps = conexionOracle.co.prepareStatement("SELECT * FROM EXPERTO");
         
-        ps.setString(1, pais);
-        
+        else
+        {
+            ps = conexionOracle.co.prepareStatement("SELECT * FROM EXPERTO WHERE PAIS = ?");
+            
+            ps.setString(1, pais);
+        }
+       
         ResultSet rs = ps.executeQuery();
         ArrayList<experto> expertos = new ArrayList();
         

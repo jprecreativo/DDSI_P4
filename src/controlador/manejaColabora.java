@@ -7,20 +7,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class manejaColabora {
-    // Creamos un objeto de tipo "conexionOracle"
-    conexionOracle conexion = null;
     
+    conexionOracle co = null;
     // Creamos un PreparedStatement como atributo de la clase manejaExperto para
     // utilizarlo en los diferentes métodos
     PreparedStatement ps = null;
-    
-     /**
-    * Implementa operaciones sobre la tabla COLABORA
-    * @param c conexión con Oracle
-    */
-    public manejaColabora(conexionOracle c) {
-        conexion = c;
+
+    public manejaColabora(conexionOracle co) {
+        
+        this.co = co;
     }
+   
+    
+    
      /**
     * Comprueba si existe una colaboración en la tabla de COLABORA dado su código
     * @param codExperto, codCaso caso

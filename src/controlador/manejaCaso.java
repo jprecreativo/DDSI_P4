@@ -8,25 +8,15 @@ import java.sql.SQLException;
 
 
 public class manejaCaso {
-    // Crea un objeto de tipo "conexionOracle"
-    conexionOracle conexion = null;
     
     // Crea un PreparedStatement como atributo de la clase manejaExperto para
     // utilizarlo en los diferentes métodos
     PreparedStatement ps = null;
-
-    
-    /**
-    * Implementa operaciones sobre la tabla CASO
-    * @param c conexión con Oracle
-    */
-    public manejaCaso(conexionOracle c) {
-        conexion = c;
-	    }
 	 
      /**
     *  Comprueba si existe un caso en la tabla de CASO_POLICIAL dado un código de caso
     * @param codCaso código del caso a buscar
+     * @return 
     * @throws SQLException si ocurre alguna anomalía
     */
     public boolean existeCaso(String codCaso) throws SQLException 

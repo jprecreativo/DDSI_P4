@@ -12,20 +12,13 @@ import vista.Consultar;
  */
 public class Nacionalidad implements ItemListener
 {
-    private final conexionOracle co;
-
-    public Nacionalidad(conexionOracle co) 
-    {
-        this.co = co;
-    }
-    
     @Override
     public void itemStateChanged(ItemEvent event) 
     {
         if(event.getStateChange() == ItemEvent.SELECTED)
         {
             String nacionalidad = event.getItem().toString();
-            manejaExperto me = new manejaExperto(co);
+            manejaExperto me = new manejaExperto();
             
             try 
             {

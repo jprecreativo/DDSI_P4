@@ -237,10 +237,9 @@ public class Colaborar extends Screen
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cb_nacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(tf_codExperto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
@@ -259,7 +258,9 @@ public class Colaborar extends Screen
                             .addComponent(tf_codCaso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10)
                             .addComponent(tf_fechaIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel7))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cb_nacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel7)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
@@ -294,7 +295,7 @@ public class Colaborar extends Screen
                                  tf_especialidad.getText());
         
         
-                if(new manejaExperto(co).insertaExperto(ex))
+                if(new manejaExperto().insertaExperto(ex))
                     JOptionPane.showMessageDialog(this, "Experto insertado con éxito.", "Inserción realizada", JOptionPane.INFORMATION_MESSAGE);
 
                 else
@@ -312,7 +313,7 @@ public class Colaborar extends Screen
                                  tf_fechaFin.getText());
         
         
-                if(new manejaCaso(co).insertaCaso(c))
+                if(new manejaCaso().insertaCaso(c))
                     JOptionPane.showMessageDialog(this, "Caso insertado con éxito.", "Inserción realizada", JOptionPane.INFORMATION_MESSAGE);
 
                 else
@@ -373,7 +374,7 @@ public class Colaborar extends Screen
         if(evt.getKeyCode() == KeyEvent.VK_ENTER)
             try 
             {
-                if(new manejaExperto(co).existeExperto(tf_codExperto.getText()))
+                if(new manejaExperto().existeExperto(tf_codExperto.getText()))
                 {
                     JOptionPane.showMessageDialog(this, "El experto ya existe, continua comprobando el caso.");
                     
@@ -406,7 +407,7 @@ public class Colaborar extends Screen
         if(evt.getKeyCode() == KeyEvent.VK_ENTER)
             try 
             {
-                if(new manejaCaso(co).existeCaso(tf_codCaso.getText()))
+                if(new manejaCaso().existeCaso(tf_codCaso.getText()))
                 {
                     JOptionPane.showMessageDialog(this, "El caso ya existe, contina rellenando los datos de la colaboración.");
                     

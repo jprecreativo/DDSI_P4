@@ -3,7 +3,6 @@ package controlador;
 import vista.Colaborar;
 import vista.Consultar;
 import vista.InsertarExperto;
-import vista.Screen;
 
 /**
  *
@@ -32,7 +31,7 @@ public abstract class Factory
                                 if(consultar != null)
                                     consultar.dispose();
                                 
-                                consultar = new Consultar(Factory.co);
+                                consultar = new Consultar();
                                 
                                 break;
                                 
