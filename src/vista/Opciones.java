@@ -55,21 +55,42 @@ public class Opciones extends Screen
     
     private void loadImages()
     {
-        this.loadSalir();
         this.loadInsertar();
         this.loadConsultar();
         this.loadColaborar();
+        this.loadGColaboraciones();
+        this.loadSalir();
+    }
+    
+    private void loadGColaboraciones()
+    {
+        URL url = this.getClass().getResource("G_Colaboraciones.png");
+        JLabel label = new JLabel(new ImageIcon(url));
+        
+        label.setBounds(0, 0, jp_G_Colaboraciones.getWidth(), jp_G_Colaboraciones.getHeight());
+        label.setToolTipText("Gestionar colaboraciones");
+        
+        label.addMouseListener(new MouseAdapter() {
+            
+            @Override
+            public void mouseClicked(MouseEvent event)
+            {
+                Factory.factoryMethod("G_Colaboraciones", "");
+            }
+        });
+        
+        jp_G_Colaboraciones.add(label);
     }
     
     private void loadColaborar()
     {
-        URL salirURL = this.getClass().getResource("Colaborar.png");
-        JLabel labelInsertar = new JLabel(new ImageIcon(salirURL));
+        URL url = this.getClass().getResource("Colaborar.png");
+        JLabel label = new JLabel(new ImageIcon(url));
         
-        labelInsertar.setBounds(0, 0, jp_colaboraciones.getWidth(), jp_colaboraciones.getHeight());
-        labelInsertar.setToolTipText("Insertar una colaboración");
+        label.setBounds(0, 0, jp_colaboraciones.getWidth(), jp_colaboraciones.getHeight());
+        label.setToolTipText("Insertar una colaboración");
         
-        labelInsertar.addMouseListener(new MouseAdapter() {
+        label.addMouseListener(new MouseAdapter() {
             
             @Override
             public void mouseClicked(MouseEvent event)
@@ -78,18 +99,18 @@ public class Opciones extends Screen
             }
         });
         
-        jp_colaboraciones.add(labelInsertar);
+        jp_colaboraciones.add(label);
     }
     
     private void loadConsultar()
     {
-        URL salirURL = this.getClass().getResource("Consultar.png");
-        JLabel labelInsertar = new JLabel(new ImageIcon(salirURL));
+        URL url = this.getClass().getResource("Consultar.png");
+        JLabel label = new JLabel(new ImageIcon(url));
         
-        labelInsertar.setBounds(0, 0, jp_consultarExperto.getWidth(), jp_consultarExperto.getHeight());
-        labelInsertar.setToolTipText("Consulta expertos por nacionalidad");
+        label.setBounds(0, 0, jp_consultarExperto.getWidth(), jp_consultarExperto.getHeight());
+        label.setToolTipText("Consulta expertos por nacionalidad");
         
-        labelInsertar.addMouseListener(new MouseAdapter() {
+        label.addMouseListener(new MouseAdapter() {
             
             @Override
             public void mouseClicked(MouseEvent event)
@@ -98,18 +119,18 @@ public class Opciones extends Screen
             }
         });
         
-        jp_consultarExperto.add(labelInsertar);
+        jp_consultarExperto.add(label);
     }
     
     private void loadSalir()
     {
-        URL salirURL = this.getClass().getResource("Salir.png");
-        JLabel labelSalir = new JLabel(new ImageIcon(salirURL));
+        URL url = this.getClass().getResource("Salir.png");
+        JLabel label = new JLabel(new ImageIcon(url));
         
-        labelSalir.setBounds(0, 0, jp_Salir.getWidth(), jp_Salir.getHeight());
-        labelSalir.setToolTipText("Desconectarme");
+        label.setBounds(0, 0, jp_Salir.getWidth(), jp_Salir.getHeight());
+        label.setToolTipText("Desconectarme");
         
-        labelSalir.addMouseListener(new MouseAdapter() {
+        label.addMouseListener(new MouseAdapter() {
             
             @Override
             public void mouseClicked(MouseEvent event)
@@ -127,18 +148,18 @@ public class Opciones extends Screen
             }
         });
         
-        jp_Salir.add(labelSalir);
+        jp_Salir.add(label);
     }
     
     private void loadInsertar()
     {
-        URL salirURL = this.getClass().getResource("InsertarExperto.png");
-        JLabel labelInsertar = new JLabel(new ImageIcon(salirURL));
+        URL url = this.getClass().getResource("InsertarExperto.png");
+        JLabel label = new JLabel(new ImageIcon(url));
         
-        labelInsertar.setBounds(0, 0, jp_insertarExperto.getWidth(), jp_insertarExperto.getHeight());
-        labelInsertar.setToolTipText("Insertar un experto");
+        label.setBounds(0, 0, jp_insertarExperto.getWidth(), jp_insertarExperto.getHeight());
+        label.setToolTipText("Insertar un experto");
         
-        labelInsertar.addMouseListener(new MouseAdapter() {
+        label.addMouseListener(new MouseAdapter() {
             
             @Override
             public void mouseClicked(MouseEvent event)
@@ -147,7 +168,7 @@ public class Opciones extends Screen
             }
         });
         
-        jp_insertarExperto.add(labelInsertar);
+        jp_insertarExperto.add(label);
     }
 
     /**
@@ -164,6 +185,7 @@ public class Opciones extends Screen
         jp_colaboraciones = new javax.swing.JPanel();
         jp_insertarExperto = new javax.swing.JPanel();
         jp_consultarExperto = new javax.swing.JPanel();
+        jp_G_Colaboraciones = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -179,7 +201,7 @@ public class Opciones extends Screen
         );
         jp_SalirLayout.setVerticalGroup(
             jp_SalirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 88, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jp_colaboracionesLayout = new javax.swing.GroupLayout(jp_colaboraciones);
@@ -215,23 +237,37 @@ public class Opciones extends Screen
             .addGap(0, 88, Short.MAX_VALUE)
         );
 
+        javax.swing.GroupLayout jp_G_ColaboracionesLayout = new javax.swing.GroupLayout(jp_G_Colaboraciones);
+        jp_G_Colaboraciones.setLayout(jp_G_ColaboracionesLayout);
+        jp_G_ColaboracionesLayout.setHorizontalGroup(
+            jp_G_ColaboracionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 88, Short.MAX_VALUE)
+        );
+        jp_G_ColaboracionesLayout.setVerticalGroup(
+            jp_G_ColaboracionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 88, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jp_consultarExperto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(jp_insertarExperto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jp_colaboraciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jp_Salir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(89, 89, 89)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jp_consultarExperto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jp_insertarExperto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jp_colaboraciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jp_G_Colaboraciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jp_Salir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(89, 89, 89)
+                        .addComponent(jLabel1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -240,14 +276,13 @@ public class Opciones extends Screen
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jp_Salir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jp_colaboraciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(jp_insertarExperto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jp_consultarExperto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jp_Salir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jp_insertarExperto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jp_consultarExperto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jp_G_Colaboraciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jp_colaboraciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
@@ -255,6 +290,7 @@ public class Opciones extends Screen
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jp_G_Colaboraciones;
     private javax.swing.JPanel jp_Salir;
     private javax.swing.JPanel jp_colaboraciones;
     private javax.swing.JPanel jp_consultarExperto;
