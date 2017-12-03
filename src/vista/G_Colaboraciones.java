@@ -1,6 +1,10 @@
 package vista;
 
-import controlador.conexionOracle;
+import controlador.manejaColabora;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -8,17 +12,12 @@ import controlador.conexionOracle;
  */
 public class G_Colaboraciones extends Screen 
 {
-    private final conexionOracle co;
-    
     /**
      * Creates new form G_Colaboraciones
-     * @param co
      */
-    public G_Colaboraciones(conexionOracle co) 
+    public G_Colaboraciones() 
     {
         initComponents();
-        
-        this.co = co;
         
         super.inicialize(this.getWidth(), this.getHeight(), "Gestión de colaboraciones");
     }
@@ -38,7 +37,7 @@ public class G_Colaboraciones extends Screen
         tf_codCaso = new javax.swing.JTextField();
         bt_mostar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jt_datos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -68,6 +67,11 @@ public class G_Colaboraciones extends Screen
         jLabel1.setText("Introduce el código de un caso:");
 
         bt_mostar.setText("Mostrar colaboraciones");
+        bt_mostar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_mostarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,6 +106,53 @@ public class G_Colaboraciones extends Screen
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void rellenarTabla()
+    {
+        DefaultTableModel model = (DefaultTableModel) jt_datos.getModel();
+        
+        this.limpiarTabla(model);
+        this.obtenerColaboraciones(model);
+    }
+    
+    private void limpiarTabla(DefaultTableModel model)
+    {
+        if(model.getRowCount() > 0)
+            for(int i = model.getRowCount() - 1; i >= 0; i--)
+                model.removeRow(i);
+    }
+    
+    private void obtenerColaboraciones(DefaultTableModel model)
+    {
+        try 
+        {
+            ResultSet colaboraciones = new manejaColabora().listaColaboradoresPorCaso(tf_codCaso.getText());
+            
+            if(colaboraciones.isBeforeFirst())   // Si hay datos en el ResultSet.
+                while(colaboraciones.next())
+                {
+                    String codExperto = colaboraciones.getString(1);
+                    String nombreCaso = colaboraciones.getString(2);
+                    String especialidad = colaboraciones.getString(3);
+                    String colaboración = colaboraciones.getString(4);
+
+                    model.addRow(new Object[] {codExperto, nombreCaso, especialidad, colaboración});
+                }
+            
+            else
+                JOptionPane.showMessageDialog(this, "Código de caso inexistente.", "Error", JOptionPane.ERROR_MESSAGE);
+        } 
+        
+        catch (SQLException e) 
+        {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+    
+    private void bt_mostarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_mostarActionPerformed
+        
+        this.rellenarTabla();
+    }//GEN-LAST:event_bt_mostarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_mostar;

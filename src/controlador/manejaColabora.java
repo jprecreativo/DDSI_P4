@@ -1,25 +1,30 @@
 package controlador;
 
+import java.sql.CallableStatement;
 import modelo.colabora;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import oracle.jdbc.OracleTypes;
 
-public class manejaColabora {
-    
-    conexionOracle co = null;
+public class manejaColabora 
+{
     // Creamos un PreparedStatement como atributo de la clase manejaExperto para
     // utilizarlo en los diferentes métodos
     PreparedStatement ps = null;
 
-    public manejaColabora(conexionOracle co) {
+    public ResultSet listaColaboradoresPorCaso(String codCaso) throws SQLException
+    {
+        CallableStatement pColaboradoresCaso = conexionOracle.co.prepareCall("{CALL pColaboradoresCaso(?,?)}");
         
-        this.co = co;
+        pColaboradoresCaso.setString(1, codCaso);
+        pColaboradoresCaso.registerOutParameter(2, OracleTypes.CURSOR);
+        pColaboradoresCaso.executeUpdate();
+        
+        return ((ResultSet) pColaboradoresCaso.getObject(2));
     }
    
-    
-    
      /**
     * Comprueba si existe una colaboración en la tabla de COLABORA dado su código
     * @param codExperto, codCaso caso

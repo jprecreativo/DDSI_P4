@@ -3,13 +3,14 @@ import java.sql.*;
 
 public class conexionOracle 
 {
-    public static Connection co = null;
+    protected static Connection co = null;
     
     /** 
       Establece la conexión con el servidor
      * @param username
      * @param pass
-    @throws Exception si ocurre cualquier anormalidad
+     * @throws java.lang.ClassNotFoundException
+     * @throws java.sql.SQLException
     */
     public conexionOracle(String username, String pass) throws ClassNotFoundException, SQLException 
     {

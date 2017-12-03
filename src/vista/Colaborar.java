@@ -323,7 +323,7 @@ public class Colaborar extends Screen
     
     private void colaboraciónInsertada() throws SQLException
     {
-        manejaColabora mc = new manejaColabora(co);
+        manejaColabora mc = new manejaColabora();
             
         if(!mc.existeColaboracion(tf_codExperto.getText(), tf_codCaso.getText()))
         {

@@ -49,7 +49,7 @@ public abstract class Factory
                                     if(g_colaboraciones != null)
                                         g_colaboraciones.dispose();
                                     
-                                    g_colaboraciones = new G_Colaboraciones(Factory.co);
+                                    g_colaboraciones = new G_Colaboraciones();
                                     
                                     break;
         }    
