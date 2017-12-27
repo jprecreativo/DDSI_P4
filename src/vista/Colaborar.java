@@ -324,9 +324,6 @@ public class Colaborar extends Screen
         
                 if(new manejaExperto().insertaExperto(ex))
                     JOptionPane.showMessageDialog(this, "Experto insertado con éxito.", "Inserción realizada", JOptionPane.INFORMATION_MESSAGE);
-
-                else
-                    JOptionPane.showMessageDialog(this, "Ocurrió un error, no se insertó el experto.", "Error", JOptionPane.ERROR_MESSAGE);
             }
     }
     
@@ -334,17 +331,21 @@ public class Colaborar extends Screen
     {
         if(!existeCaso)
             {
+                SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaIni = formato.format(dc_fechaIni.getDate());
+                String fechaFin = "";
+        
+                if(dc_fechaFin.getDate() != null)
+                    fechaFin = formato.format(dc_fechaFin.getDate());
+                
                 caso c = new caso(tf_codCaso.getText(),
                                  tf_nombreCaso.getText(),
-                                 dc_fechaIni.getDateFormatString(),
-                                 dc_fechaFin.getDateFormatString());
+                                 fechaIni,
+                                 fechaFin);
         
         
                 if(new manejaCaso().insertaCaso(c))
                     JOptionPane.showMessageDialog(this, "Caso insertado con éxito.", "Inserción realizada", JOptionPane.INFORMATION_MESSAGE);
-
-                else
-                    JOptionPane.showMessageDialog(this, "Ocurrió un error, no se insertó el caso.", "Error", JOptionPane.ERROR_MESSAGE);
             }
     }
     
@@ -426,31 +427,55 @@ public class Colaborar extends Screen
         }
     }
     
+    private void comprobarFechas() throws Exception
+    {
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaIni = formato.format(dc_fechaIni.getDate());
+        String fecha = formato.format(dc_fecha.getDate());
+        String fechaFin = "";
+        
+        if(dc_fechaFin.getDate() != null)
+            fechaFin = formato.format(dc_fechaFin.getDate());
+        
+        if("".equals(fechaFin) && fecha.compareTo(fechaIni) == -1)
+            throw new Exception("La fecha de la colaboración ha de ser mayor o igual a la fecha de inicio del caso.");
+        
+        if(!"".equals(fechaFin) && (fecha.compareTo(fechaIni) == -1 || fecha.compareTo(fechaFin) == 1))
+            throw new Exception("La fecha de la colaboración ha de estar comprendida entre las fechas de inicio y fin del caso.");
+    }
+    
     private void bt_insertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_insertarActionPerformed
 
-            try 
-            {
-                co.inicioTransaccion();
+        try 
+        {
+            this.comprobarFechas();   // Antes de nada, se comprueban las fechas.
+            
+            co.inicioTransaccion();
 
-                this.expertoInsertado();
-                this.casoInsertado(); 
-                this.colaboraciónInsertada();
+            this.expertoInsertado();
+            this.casoInsertado();
+            this.colaboraciónInsertada();
+        }
+
+        catch (SQLException e1)
+        {
+            JOptionPane.showMessageDialog(this, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+            try
+            {
+                co.finTransaccionRollback();
             }
 
-            catch (SQLException e1)
+            catch (SQLException e2)
             {
-                System.out.println("Error: " + e1.getMessage());
-
-                try
-                {
-                    co.finTransaccionRollback();
-                }
-
-                catch (SQLException e2)
-                {
-                    System.out.println("Error: " + e2.getMessage());
-                }
+                JOptionPane.showMessageDialog(this, e2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
+        } 
+
+        catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_bt_insertarActionPerformed
 
     private void bt_comprobarExpertoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_comprobarExpertoActionPerformed
