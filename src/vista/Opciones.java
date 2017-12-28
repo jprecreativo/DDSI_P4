@@ -59,7 +59,28 @@ public class Opciones extends Screen
         this.loadConsultar();
         this.loadColaborar();
         this.loadGColaboraciones();
+        this.loadGCompleta();
         this.loadSalir();
+    }
+    
+    private void loadGCompleta()
+    {
+        URL url = this.getClass().getResource("G_Completa.png");
+        JLabel label = new JLabel(new ImageIcon(url));
+        
+        label.setBounds(0, 0, jp_G_Completa.getWidth(), jp_G_Completa.getHeight());
+        label.setToolTipText("Gestión completa");
+        
+        label.addMouseListener(new MouseAdapter() {
+            
+            @Override
+            public void mouseClicked(MouseEvent event)
+            {
+                Factory.factoryMethod("G_Completa");
+            }
+        });
+        
+        jp_G_Completa.add(label);
     }
     
     private void loadGColaboraciones()
@@ -75,7 +96,7 @@ public class Opciones extends Screen
             @Override
             public void mouseClicked(MouseEvent event)
             {
-                Factory.factoryMethod("G_Colaboraciones", "");
+                Factory.factoryMethod("G_Colaboraciones");
             }
         });
         
@@ -95,7 +116,7 @@ public class Opciones extends Screen
             @Override
             public void mouseClicked(MouseEvent event)
             {
-                Factory.factoryMethod("Colaborar", "");
+                Factory.factoryMethod("Colaborar");
             }
         });
         
@@ -115,7 +136,7 @@ public class Opciones extends Screen
             @Override
             public void mouseClicked(MouseEvent event)
             {
-                Factory.factoryMethod("Consultar", "");
+                Factory.factoryMethod("Consultar");
             }
         });
         
@@ -164,7 +185,7 @@ public class Opciones extends Screen
             @Override
             public void mouseClicked(MouseEvent event)
             {
-                Factory.factoryMethod("Insertar", "");
+                Factory.factoryMethod("Insertar");
             }
         });
         
@@ -186,6 +207,7 @@ public class Opciones extends Screen
         jp_insertarExperto = new javax.swing.JPanel();
         jp_consultarExperto = new javax.swing.JPanel();
         jp_G_Colaboraciones = new javax.swing.JPanel();
+        jp_G_Completa = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -248,6 +270,17 @@ public class Opciones extends Screen
             .addGap(0, 88, Short.MAX_VALUE)
         );
 
+        javax.swing.GroupLayout jp_G_CompletaLayout = new javax.swing.GroupLayout(jp_G_Completa);
+        jp_G_Completa.setLayout(jp_G_CompletaLayout);
+        jp_G_CompletaLayout.setHorizontalGroup(
+            jp_G_CompletaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 88, Short.MAX_VALUE)
+        );
+        jp_G_CompletaLayout.setVerticalGroup(
+            jp_G_CompletaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -264,9 +297,11 @@ public class Opciones extends Screen
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jp_G_Colaboraciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jp_G_Completa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jp_Salir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(89, 89, 89)
+                        .addGap(172, 172, 172)
                         .addComponent(jLabel1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -281,7 +316,8 @@ public class Opciones extends Screen
                     .addComponent(jp_insertarExperto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jp_consultarExperto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jp_G_Colaboraciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jp_colaboraciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jp_colaboraciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jp_G_Completa, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
@@ -291,6 +327,7 @@ public class Opciones extends Screen
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jp_G_Colaboraciones;
+    private javax.swing.JPanel jp_G_Completa;
     private javax.swing.JPanel jp_Salir;
     private javax.swing.JPanel jp_colaboraciones;
     private javax.swing.JPanel jp_consultarExperto;

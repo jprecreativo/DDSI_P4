@@ -107,7 +107,7 @@
               <Table columnCount="5" rowCount="0">
                 <Column editable="false" title="CODEXPERTO" type="java.lang.String"/>
                 <Column editable="false" title="NOMBRE" type="java.lang.String"/>
-                <Column editable="false" title="PAIS" type="java.lang.String"/>
+                <Column editable="false" title="PA&#xcd;S" type="java.lang.String"/>
                 <Column editable="false" title="SEXO" type="java.lang.String"/>
                 <Column editable="false" title="ESPECIALIDAD" type="java.lang.String"/>
               </Table>

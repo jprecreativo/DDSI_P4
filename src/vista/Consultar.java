@@ -89,7 +89,7 @@ public class Consultar extends Screen
 
             },
             new String [] {
-                "CODEXPERTO", "NOMBRE", "PAIS", "SEXO", "ESPECIALIDAD"
+                "CODEXPERTO", "NOMBRE", "PAÍS", "SEXO", "ESPECIALIDAD"
             }
         ) {
             Class[] types = new Class [] {

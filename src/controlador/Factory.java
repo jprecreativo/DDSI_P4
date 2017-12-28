@@ -3,6 +3,7 @@ package controlador;
 import vista.Colaborar;
 import vista.Consultar;
 import vista.G_Colaboraciones;
+import vista.G_Completa;
 import vista.InsertarExperto;
 
 /**
@@ -16,8 +17,9 @@ public abstract class Factory
     private static Consultar consultar = null;
     private static InsertarExperto insertar = null;
     private static G_Colaboraciones g_colaboraciones = null;
+    private static G_Completa g_completa = null;
     
-    public static void factoryMethod(String screen, String codExperto)
+    public static void factoryMethod(String screen)
     {
         switch(screen)
         {
@@ -41,7 +43,7 @@ public abstract class Factory
                                     if(insertar != null)
                                         insertar.dispose();
 
-                                    insertar = new InsertarExperto(Factory.co, codExperto);
+                                    insertar = new InsertarExperto();
 
                                     break;
                                 
@@ -52,6 +54,12 @@ public abstract class Factory
                                     g_colaboraciones = new G_Colaboraciones();
                                     
                                     break;
+                                    
+            case "G_Completa":
+                                    if(g_completa != null)
+                                        g_completa.dispose();
+                                    
+                                    g_completa = new G_Completa();
         }    
     }
 }

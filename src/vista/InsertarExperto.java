@@ -1,7 +1,6 @@
 package vista;
 
 import controlador.Nacionalidad;
-import controlador.conexionOracle;
 import controlador.manejaExperto;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,25 +13,14 @@ import modelo.experto;
  */
 public class InsertarExperto extends Screen
 {
-    private final conexionOracle co;
-    
     /**
      * Creates new form Insertar
-     * @param co
-     * @param codExperto
      */
-    public InsertarExperto(conexionOracle co, String codExperto) 
+    public InsertarExperto() 
     {
         initComponents();
         
-        this.co = co;
         this.obtenerNacionalidades();
-        
-        if(!"".equals(codExperto))
-        {
-            tf_codExperto.setText(codExperto);
-            tf_codExperto.setEditable(false);
-        }
         
         super.inicialize(this.getWidth(), this.getHeight(), "Insertar un experto");
     }
