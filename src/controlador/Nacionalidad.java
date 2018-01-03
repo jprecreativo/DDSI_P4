@@ -17,12 +17,9 @@ public class Nacionalidad implements ItemListener
     {
         if(event.getStateChange() == ItemEvent.SELECTED)
         {
-            String nacionalidad = event.getItem().toString();
-            manejaExperto me = new manejaExperto();
-            
             try 
             {
-                Consultar.rellenarTabla(me.listaExpertosPorPais(nacionalidad));
+                Consultar.rellenarTabla(new manejaExperto().listaExpertosPorPais(event.getItem().toString()));
             } 
             
             catch (SQLException e) 

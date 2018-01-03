@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import oracle.jdbc.OracleTypes;
 
 public class manejaColabora 
@@ -13,6 +14,30 @@ public class manejaColabora
     // Creamos un PreparedStatement como atributo de la clase manejaExperto para
     // utilizarlo en los diferentes métodos
     PreparedStatement ps = null;
+    
+    /**
+     * Para obetener las colaboraciones.
+     * @return Todas las colaboraciones de la BD.
+     * @throws java.sql.SQLException Se lanzará si hay algún problema.
+     */
+    public ArrayList<colabora> obtenerColaboraciones() throws SQLException
+    {
+        ps = conexionOracle.co.prepareStatement("SELECT * FROM COLABORA");
+        
+        ResultSet rs = ps.executeQuery();
+        ArrayList<colabora> colaboraciones = new ArrayList();
+        
+        while(rs.next())
+        {
+            colabora c =  new colabora(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
+            
+            colaboraciones.add(c);
+        }
+        
+        ps.close();
+        
+        return colaboraciones;
+    }
 
     public ResultSet listaColaboradoresPorCaso(String codCaso) throws SQLException
     {

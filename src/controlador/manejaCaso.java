@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 
 public class manejaCaso {
@@ -72,6 +73,30 @@ public class manejaCaso {
 
             return false;
         }
+    }
+    
+    /**
+     * Para obtener los casos.
+     * @return Todos los casos de la BD.
+     * @throws java.sql.SQLException Si hay algún problema.
+     */
+    public ArrayList<caso> obtenerCasos() throws SQLException
+    {
+        ps = conexionOracle.co.prepareStatement("SELECT * FROM CASO_POLICIAL");
+        
+        ResultSet rs = ps.executeQuery();
+        ArrayList<caso> casos = new ArrayList();
+        
+        while(rs.next())
+        {
+            caso c =  new caso(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
+            
+            casos.add(c);
+        }
+        
+        ps.close();
+        
+        return casos;
     }
 }
 

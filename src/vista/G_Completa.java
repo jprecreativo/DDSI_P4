@@ -1,19 +1,101 @@
 package vista;
 
+import controlador.manejaCaso;
+import controlador.manejaColabora;
+import controlador.manejaExperto;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import modelo.caso;
+import modelo.colabora;
+import modelo.experto;
+
 /**
  *
  * @author jprecreativo
  */
 public class G_Completa extends Screen 
 {
- /**
-     * Creates new form G_CompletaNew
-     */
     public G_Completa() 
     {
         initComponents();
         
         super.inicialize(this.getWidth(), this.getHeight(), "Gestión completa");
+        this.mostrarDatos();
+    }
+    
+    private void mostrarDatos()
+    {
+        try 
+        {
+            this.mostrarExpertos();
+            this.mostrarCasos();
+            this.mostrarColaboraciones();
+        } 
+        
+        catch (SQLException e) 
+        {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+    
+    private void borrarDatos(DefaultTableModel datos)
+    {
+        if(datos.getRowCount() > 0)
+            for(int i = datos.getRowCount() - 1; i >= 0; i--)
+                datos.removeRow(i);
+    }
+    
+    private DefaultTableModel obtenerModelo(String tabla)
+    {
+        DefaultTableModel model;
+        
+        if("Expertos".equals(tabla))
+            model = (DefaultTableModel) jt_Expertos.getModel();
+        
+        else if("Casos".equals(tabla))
+            model = (DefaultTableModel) jt_Casos.getModel();
+        
+        else
+            model = (DefaultTableModel) jt_Colaboraciones.getModel();
+        
+        this.borrarDatos(model);
+        
+        return model;
+    }
+    
+    private void mostrarExpertos() throws SQLException
+    {
+        DefaultTableModel tablaExpertos = this.obtenerModelo("Expertos");
+        ArrayList<experto> expertos = new manejaExperto().listaExpertosPorPais("...");
+        
+        expertos.stream().forEach((e) -> tablaExpertos.addRow(new Object[] {e.getCodExperto(),
+                                                                    e.getNombre(),
+                                                                    e.getPais(),
+                                                                    e.getSexo(),
+                                                                    e.getEspecialidad()}));
+    }
+    
+    private void mostrarCasos() throws SQLException
+    {
+        DefaultTableModel tablaCasos = this.obtenerModelo("Casos");
+        ArrayList<caso> casos = new manejaCaso().obtenerCasos();
+        
+        casos.stream().forEach((c) -> tablaCasos.addRow(new Object[] {c.getCodCaso(),
+                                                                    c.getNombre(),
+                                                                    c.getFechaInicio(),
+                                                                    c.getFechaFin()}));
+    }
+    
+    private void mostrarColaboraciones() throws SQLException
+    {
+        DefaultTableModel tablaColaboraciones = this.obtenerModelo("Colaboraciones");
+        ArrayList<colabora> colaboraciones = new manejaColabora().obtenerColaboraciones();
+        
+        colaboraciones.stream().forEach((c) -> tablaColaboraciones.addRow(new Object[] {c.getCodExperto(),
+                                                                                        c.getCodCaso(),
+                                                                                        c.getFecha(),
+                                                                                        c.getDescripcionColaboracion()}));
     }
 
     /**
@@ -60,12 +142,12 @@ public class G_Completa extends Screen
         bt_insertarCaso = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        tf_codExperto1 = new javax.swing.JTextField();
+        tf_codExpertoCol = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jt_Colaboraciones = new javax.swing.JTable();
         jLabel14 = new javax.swing.JLabel();
-        tf_codCaso1 = new javax.swing.JTextField();
+        tf_codCasoCol = new javax.swing.JTextField();
         dc_fecha = new com.toedter.calendar.JDateChooser();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -73,7 +155,7 @@ public class G_Completa extends Screen
         bt_insertarColaborar = new javax.swing.JButton();
         bt_eliminarColaborar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         bt_Refrescar.setText("Refrescar");
 
@@ -337,6 +419,8 @@ public class G_Completa extends Screen
         jLabel12.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel12.setText("Código del experto:");
 
+        tf_codExpertoCol.setEditable(false);
+
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel13.setText("Colaboraciones");
 
@@ -360,6 +444,8 @@ public class G_Completa extends Screen
 
         jLabel14.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel14.setText("Código del caso:");
+
+        tf_codCasoCol.setEditable(false);
 
         dc_fecha.setDateFormatString("dd/MM/yyyy");
 
@@ -389,11 +475,11 @@ public class G_Completa extends Screen
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tf_codExperto1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(tf_codExpertoCol, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tf_codCaso1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(tf_codCasoCol, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel15)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -422,11 +508,11 @@ public class G_Completa extends Screen
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
-                            .addComponent(tf_codExperto1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tf_codExpertoCol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel14)
-                            .addComponent(tf_codCaso1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tf_codCasoCol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel15)
@@ -538,9 +624,9 @@ public class G_Completa extends Screen
     private javax.swing.JTable jt_Colaboraciones;
     private static javax.swing.JTable jt_Expertos;
     private javax.swing.JTextField tf_codCaso;
-    private javax.swing.JTextField tf_codCaso1;
+    private javax.swing.JTextField tf_codCasoCol;
     private javax.swing.JTextField tf_codExperto;
-    private javax.swing.JTextField tf_codExperto1;
+    private javax.swing.JTextField tf_codExpertoCol;
     private javax.swing.JTextField tf_des;
     private javax.swing.JTextField tf_especialidad;
     private javax.swing.JTextField tf_nombreCaso;
