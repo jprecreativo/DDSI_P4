@@ -437,10 +437,10 @@ public class Colaborar extends Screen
         if(dc_fechaFin.getDate() != null)
             fechaFin = formato.format(dc_fechaFin.getDate());
         
-        if("".equals(fechaFin) && fecha.compareTo(fechaIni) == -1)
-            throw new Exception("La fecha de la colaboración ha de ser mayor o igual a la fecha de inicio del caso.");
+        if(!"".equals(fechaFin) && fechaIni.compareTo(fechaFin) == 1)
+            throw new Exception("La fecha de fin ha de ser mayor o igual a la fecha de inicio del caso.");
         
-        if(!"".equals(fechaFin) && (fecha.compareTo(fechaIni) == -1 || fecha.compareTo(fechaFin) == 1))
+        if((!"".equals(fechaFin) && fecha.compareTo(fechaFin) == 1) || fecha.compareTo(fechaIni) == -1)
             throw new Exception("La fecha de la colaboración ha de estar comprendida entre las fechas de inicio y fin del caso.");
     }
     

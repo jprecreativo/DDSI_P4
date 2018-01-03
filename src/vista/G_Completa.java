@@ -4,7 +4,10 @@ import controlador.manejaCaso;
 import controlador.manejaColabora;
 import controlador.manejaExperto;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.caso;
 import modelo.colabora;
@@ -35,7 +38,7 @@ public class G_Completa extends Screen
         
         catch (SQLException e) 
         {
-            System.out.println("Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -115,7 +118,7 @@ public class G_Completa extends Screen
         tf_codExperto = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        tf_nombreExperto = new javax.swing.JTextField();
         cb_nacionalidad = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -184,6 +187,11 @@ public class G_Completa extends Screen
         jLabel6.setText("Especialidad:");
 
         bt_insertarExperto.setText("Insertar experto");
+        bt_insertarExperto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_insertarExpertoActionPerformed(evt);
+            }
+        });
 
         jt_Expertos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -208,6 +216,11 @@ public class G_Completa extends Screen
                 return canEdit [columnIndex];
             }
         });
+        jt_Expertos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jt_ExpertosMouseReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(jt_Expertos);
 
         bt_eliminarExperto.setText("Eliminar experto");
@@ -229,7 +242,7 @@ public class G_Completa extends Screen
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel3)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(tf_nombreExperto, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel1)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -270,7 +283,7 @@ public class G_Completa extends Screen
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tf_nombreExperto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
@@ -294,8 +307,6 @@ public class G_Completa extends Screen
         jLabel9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel9.setText("Nombre:");
 
-        tf_nombreCaso.setEnabled(false);
-
         jLabel10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel10.setText("Fecha de inicio:");
 
@@ -303,10 +314,8 @@ public class G_Completa extends Screen
         jLabel11.setText("Fecha de fin:");
 
         dc_fechaIni.setDateFormatString("dd/MM/yyyy");
-        dc_fechaIni.setEnabled(false);
 
         dc_fechaFin.setDateFormatString("dd/MM/yyyy");
-        dc_fechaFin.setEnabled(false);
 
         jLabel7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel7.setText("Código del caso:");
@@ -337,11 +346,21 @@ public class G_Completa extends Screen
                 return canEdit [columnIndex];
             }
         });
+        jt_Casos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jt_CasosMouseReleased(evt);
+            }
+        });
         jScrollPane3.setViewportView(jt_Casos);
 
         bt_eliminarCaso.setText("Eliminar caso");
 
         bt_insertarCaso.setText("Insertar caso");
+        bt_insertarCaso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_insertarCasoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -386,29 +405,27 @@ public class G_Completa extends Screen
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addComponent(dc_fechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(tf_codCaso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(tf_nombreCaso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(21, 21, 21)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel7)
-                                    .addComponent(tf_codCaso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel9)
-                                    .addComponent(tf_nombreCaso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel10)
-                                    .addComponent(dc_fechaIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel11))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                            .addComponent(jLabel10)
+                            .addComponent(dc_fechaIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11)
+                            .addComponent(dc_fechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bt_eliminarCaso)
@@ -420,6 +437,7 @@ public class G_Completa extends Screen
         jLabel12.setText("Código del experto:");
 
         tf_codExpertoCol.setEditable(false);
+        tf_codExpertoCol.setFocusable(false);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel13.setText("Colaboraciones");
@@ -446,6 +464,7 @@ public class G_Completa extends Screen
         jLabel14.setText("Código del caso:");
 
         tf_codCasoCol.setEditable(false);
+        tf_codCasoCol.setFocusable(false);
 
         dc_fecha.setDateFormatString("dd/MM/yyyy");
 
@@ -456,6 +475,11 @@ public class G_Completa extends Screen
         jLabel16.setText("Descripción:");
 
         bt_insertarColaborar.setText("Insertar colaboración");
+        bt_insertarColaborar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_insertarColaborarActionPerformed(evt);
+            }
+        });
 
         bt_eliminarColaborar.setText("Eliminar colaboración");
 
@@ -547,8 +571,8 @@ public class G_Completa extends Screen
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -573,7 +597,7 @@ public class G_Completa extends Screen
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(bt_Refrescar)
                 .addContainerGap())
@@ -581,6 +605,111 @@ public class G_Completa extends Screen
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void bt_insertarExpertoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_insertarExpertoActionPerformed
+        
+        experto ex = new experto(tf_codExperto.getText(),
+                                 tf_nombreExperto.getText(),
+                                 cb_nacionalidad.getSelectedItem().toString(),
+                                 cb_sexo.getSelectedItem().toString(),
+                                 tf_especialidad.getText());
+        
+        
+        if(new manejaExperto().insertaExperto(ex))
+            JOptionPane.showMessageDialog(this, "Experto insertado con éxito.", "Inserción realizada", JOptionPane.INFORMATION_MESSAGE);
+        
+        else
+            JOptionPane.showMessageDialog(this, "Ocurrió un error, no se insertó el experto.", "Error", JOptionPane.ERROR_MESSAGE);
+    }//GEN-LAST:event_bt_insertarExpertoActionPerformed
+
+    private void bt_insertarCasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_insertarCasoActionPerformed
+        
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaFin = "";
+        
+        if(dc_fechaFin != null)
+            fechaFin = formato.format(dc_fechaFin.getDate());
+        
+        caso c = new caso(tf_codCaso.getText(), 
+                          tf_nombreCaso.getText(), 
+                          formato.format(dc_fechaIni.getDate()), 
+                          fechaFin);
+        
+        try 
+        {
+            new manejaCaso().insertaCaso(c);
+        } 
+        
+        catch (SQLException e) 
+        {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_bt_insertarCasoActionPerformed
+
+    private void bt_insertarColaborarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_insertarColaborarActionPerformed
+        
+        String codExperto = tf_codExpertoCol.getText();
+        String codCaso = tf_codCasoCol.getText();
+        
+        if("".equals(codExperto) || "".equals(codCaso))
+            JOptionPane.showMessageDialog(this, "Selecciona un experto y un caso.", "Información faltante", JOptionPane.QUESTION_MESSAGE);
+        
+        boolean fechasCorrectas = false;
+        
+        try 
+        {
+            fechasCorrectas = this.comprobarFechas();
+        } 
+        
+        catch (ParseException e) 
+        {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+ 
+        if(fechasCorrectas)
+        {
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            String fecha = formato.format(dc_fecha.getDate());
+            
+            colabora c = new colabora(codExperto, codCaso, fecha, tf_des.getText());
+            
+            try 
+            {
+                new manejaColabora().insertaColaboracion(c);
+            } 
+            
+            catch (SQLException e) 
+            {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }       
+        
+        else
+            JOptionPane.showMessageDialog(this, "Hay algún error con las fechas.", "Error", JOptionPane.ERROR_MESSAGE);
+    }//GEN-LAST:event_bt_insertarColaborarActionPerformed
+
+    private boolean comprobarFechas() throws ParseException
+    {
+        SimpleDateFormat formatoOrigen = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatoDestino = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaIniCasoSeleccionado = jt_Casos.getModel().getValueAt(jt_Casos.getSelectedRow(), 2).toString();
+        String fechaIni = formatoDestino.format(formatoOrigen.parse(fechaIniCasoSeleccionado));
+        String fechaFinCasoSeleccionado = jt_Casos.getModel().getValueAt(jt_Casos.getSelectedRow(), 3).toString();
+        String fechaFin = formatoDestino.format(formatoOrigen.parse(fechaFinCasoSeleccionado));
+        String fecha = formatoDestino.format(dc_fecha.getDate());
+        
+        return !(fecha.compareTo(fechaFin) == 1 || fecha.compareTo(fechaIni) == -1);
+    }
+    
+    private void jt_ExpertosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_ExpertosMouseReleased
+        
+        tf_codExpertoCol.setText(jt_Expertos.getModel().getValueAt(jt_Expertos.getSelectedRow(), 0).toString());
+    }//GEN-LAST:event_jt_ExpertosMouseReleased
+
+    private void jt_CasosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_CasosMouseReleased
+        
+        tf_codCasoCol.setText(jt_Casos.getModel().getValueAt(jt_Casos.getSelectedRow(), 0).toString());
+    }//GEN-LAST:event_jt_CasosMouseReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_Refrescar;
@@ -619,7 +748,6 @@ public class G_Completa extends Screen
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable jt_Casos;
     private javax.swing.JTable jt_Colaboraciones;
     private static javax.swing.JTable jt_Expertos;
@@ -630,5 +758,6 @@ public class G_Completa extends Screen
     private javax.swing.JTextField tf_des;
     private javax.swing.JTextField tf_especialidad;
     private javax.swing.JTextField tf_nombreCaso;
+    private javax.swing.JTextField tf_nombreExperto;
     // End of variables declaration//GEN-END:variables
 }
