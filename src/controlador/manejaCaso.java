@@ -20,15 +20,18 @@ public class manejaCaso {
      * @return 
     * @throws SQLException si ocurre alguna anomalía
     */
-    public boolean existeCaso(String codCaso) throws SQLException 
+    public caso existeCaso(String codCaso) throws SQLException 
     {
         ps = conexionOracle.co.prepareStatement("SELECT * FROM CASO_POLICIAL WHERE CODCASO = ?");
         
         ps.setString(1, codCaso);
         
-        ResultSet caso = ps.executeQuery();
+        ResultSet rs = ps.executeQuery();
         
-        return caso.next();
+        if(rs.next())
+            return (new caso(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)));
+        
+        return null;
     }
     
      /**

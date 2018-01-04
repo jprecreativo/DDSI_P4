@@ -79,7 +79,7 @@ public class manejaExperto {
      * @return 
     * @throws SQLException si ocurre alguna anomalía
      */
-    public boolean existeExperto(String codExperto) throws SQLException 
+    public experto existeExperto(String codExperto) throws SQLException 
     {
         ps = conexionOracle.co.prepareStatement("SELECT * FROM EXPERTO WHERE CODEXPERTO = ?");
         
@@ -87,7 +87,10 @@ public class manejaExperto {
 
         ResultSet rs = ps.executeQuery();
 
-        return rs.next();
+        if(rs.next())
+            return (new experto(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+        
+        return null;
     }
     
      /**

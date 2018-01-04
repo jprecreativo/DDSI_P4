@@ -59,7 +59,7 @@ public abstract class Factory
                                     if(g_completa != null)
                                         g_completa.dispose();
                                     
-                                    g_completa = new G_Completa();
+                                    g_completa = new G_Completa(Factory.co);
         }    
     }
 }

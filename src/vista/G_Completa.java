@@ -1,12 +1,17 @@
 package vista;
 
+import controlador.Nacionalidad;
+import controlador.conexionOracle;
 import controlador.manejaCaso;
 import controlador.manejaColabora;
 import controlador.manejaExperto;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.caso;
@@ -19,12 +24,36 @@ import modelo.experto;
  */
 public class G_Completa extends Screen 
 {
-    public G_Completa() 
+    private final conexionOracle co;
+    
+    public G_Completa(conexionOracle co) 
     {
         initComponents();
         
+        this.co = co;
+        jScrollPane1.getVerticalScrollBar().setUnitIncrement(16);
+        
         super.inicialize(this.getWidth(), this.getHeight(), "Gestión completa");
+        this.obtenerNacionalidades();
         this.mostrarDatos();
+    }
+    
+    private void obtenerNacionalidades()
+    {
+        try 
+        {
+            cb_nacionalidad.addItem("...");
+            
+            ResultSet nacionalidades = Nacionalidad.obtenerNacionalidades();
+            
+            while(nacionalidades.next())
+                cb_nacionalidad.addItem(nacionalidades.getString(1));
+        } 
+        
+        catch (SQLException e) 
+        {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
     
     private void mostrarDatos()
@@ -84,10 +113,12 @@ public class G_Completa extends Screen
         DefaultTableModel tablaCasos = this.obtenerModelo("Casos");
         ArrayList<caso> casos = new manejaCaso().obtenerCasos();
         
-        casos.stream().forEach((c) -> tablaCasos.addRow(new Object[] {c.getCodCaso(),
-                                                                    c.getNombre(),
-                                                                    c.getFechaInicio(),
-                                                                    c.getFechaFin()}));
+        for(caso c : casos)
+            if(null == c.getFechaFin())
+                tablaCasos.addRow(new Object[] {c.getCodCaso(), c.getNombre(), c.getFechaInicio().split(" ")[0], ""});
+        
+            else
+                tablaCasos.addRow(new Object[] {c.getCodCaso(), c.getNombre(), c.getFechaInicio().split(" ")[0], c.getFechaFin().split(" ")[0]});
     }
     
     private void mostrarColaboraciones() throws SQLException
@@ -97,7 +128,7 @@ public class G_Completa extends Screen
         
         colaboraciones.stream().forEach((c) -> tablaColaboraciones.addRow(new Object[] {c.getCodExperto(),
                                                                                         c.getCodCaso(),
-                                                                                        c.getFecha(),
+                                                                                        c.getFecha().split(" ")[0],
                                                                                         c.getDescripcionColaboracion()}));
     }
 
@@ -161,6 +192,11 @@ public class G_Completa extends Screen
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         bt_Refrescar.setText("Refrescar");
+        bt_Refrescar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_RefrescarActionPerformed(evt);
+            }
+        });
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -622,13 +658,9 @@ public class G_Completa extends Screen
             JOptionPane.showMessageDialog(this, "Ocurrió un error, no se insertó el experto.", "Error", JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_bt_insertarExpertoActionPerformed
 
-    private void bt_insertarCasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_insertarCasoActionPerformed
-        
+    private void insertarCaso(String fechaFin)
+    {
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-        String fechaFin = "";
-        
-        if(dc_fechaFin != null)
-            fechaFin = formato.format(dc_fechaFin.getDate());
         
         caso c = new caso(tf_codCaso.getText(), 
                           tf_nombreCaso.getText(), 
@@ -638,14 +670,77 @@ public class G_Completa extends Screen
         try 
         {
             new manejaCaso().insertaCaso(c);
+            
+            JOptionPane.showMessageDialog(this, "Caso insertado correctamente.", "Inserción realizada", JOptionPane.INFORMATION_MESSAGE);
         } 
         
         catch (SQLException e) 
         {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    private void bt_insertarCasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_insertarCasoActionPerformed
+        
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        
+        if(dc_fechaFin.getDate() != null)
+        {
+            if(this.comprobarFechaCaso())
+                this.insertarCaso(formato.format(dc_fechaFin.getDate()));
+            
+            else
+                JOptionPane.showMessageDialog(this, "La fecha de fin ha de mayor o igual a la de comienzo.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        else
+            this.insertarCaso("");
     }//GEN-LAST:event_bt_insertarCasoActionPerformed
 
+    private boolean comprobarFechaCaso()
+    {
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaIni = formato.format(dc_fechaIni.getDate());
+        String fechaFin = formato.format(dc_fechaFin.getDate());
+        
+        return !(fechaIni.compareTo(fechaFin) == 1);
+    }
+    
+    private void insertarColaboración(String codExperto, String codCaso) throws ParseException
+    {
+        if(this.comprobarFechaColabora())
+        {
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            String fecha = formato.format(dc_fecha.getDate());
+
+            colabora c = new colabora(codExperto, codCaso, fecha, tf_des.getText());
+
+            try 
+            {
+                new manejaColabora().insertaColaboracion(c);
+            } 
+
+            catch (SQLException e) 
+            {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }       
+
+        else
+            JOptionPane.showMessageDialog(this, "Hay algún error con las fechas.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void colaboraciónInsertada(String codExperto, String codCaso) throws SQLException, ParseException
+    {
+        manejaColabora mc = new manejaColabora();
+        
+        if(!mc.existeColaboracion(codExperto, codCaso))
+            this.insertarColaboración(codExperto, codCaso);
+        
+        else
+            JOptionPane.showMessageDialog(this, "Ya existe la colaboración.", "Colaboración no insertada", JOptionPane.ERROR_MESSAGE);
+    }
+    
     private void bt_insertarColaborarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_insertarColaborarActionPerformed
         
         String codExperto = tf_codExpertoCol.getText();
@@ -654,51 +749,52 @@ public class G_Completa extends Screen
         if("".equals(codExperto) || "".equals(codCaso))
             JOptionPane.showMessageDialog(this, "Selecciona un experto y un caso.", "Información faltante", JOptionPane.QUESTION_MESSAGE);
         
-        boolean fechasCorrectas = false;
-        
-        try 
+        else
         {
-            fechasCorrectas = this.comprobarFechas();
-        } 
-        
-        catch (ParseException e) 
-        {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
- 
-        if(fechasCorrectas)
-        {
-            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-            String fecha = formato.format(dc_fecha.getDate());
-            
-            colabora c = new colabora(codExperto, codCaso, fecha, tf_des.getText());
-            
             try 
             {
-                new manejaColabora().insertaColaboracion(c);
+                co.inicioTransaccion();
+                
+                this.colaboraciónInsertada(codExperto, codCaso);
+                
+                co.finTransaccionCommit();
+                
+                JOptionPane.showMessageDialog(this, "Colaboración insertada.", "Inserción realizada", JOptionPane.INFORMATION_MESSAGE);
             } 
             
-            catch (SQLException e) 
+            catch (SQLException | ParseException e1) 
             {
-                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                try 
+                {
+                    co.finTransaccionRollback();
+                } 
+                
+                catch (SQLException e2) 
+                {
+                    System.out.println("Error: " + e2.getMessage());
+                }
+                
+                JOptionPane.showMessageDialog(this, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        }       
-        
-        else
-            JOptionPane.showMessageDialog(this, "Hay algún error con las fechas.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_bt_insertarColaborarActionPerformed
 
-    private boolean comprobarFechas() throws ParseException
+    private boolean comprobarFechaColabora() throws ParseException
     {
-        SimpleDateFormat formatoOrigen = new SimpleDateFormat("dd-MM-yyyy");
-        SimpleDateFormat formatoDestino = new SimpleDateFormat("yyyy-MM-dd");
-        String fechaIniCasoSeleccionado = jt_Casos.getModel().getValueAt(jt_Casos.getSelectedRow(), 2).toString();
-        String fechaIni = formatoDestino.format(formatoOrigen.parse(fechaIniCasoSeleccionado));
-        String fechaFinCasoSeleccionado = jt_Casos.getModel().getValueAt(jt_Casos.getSelectedRow(), 3).toString();
-        String fechaFin = formatoDestino.format(formatoOrigen.parse(fechaFinCasoSeleccionado));
-        String fecha = formatoDestino.format(dc_fecha.getDate());
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        String fecha = formato.format(dc_fecha.getDate());
+        DefaultTableModel tablaCasos = (DefaultTableModel) jt_Casos.getModel();
+        int casoSeleccionado = jt_Casos.getSelectedRow();
+        String fechaIniCasoSeleccionado = tablaCasos.getValueAt(casoSeleccionado, 2).toString();
+        String fechaFinCasoSeleccionado = tablaCasos.getValueAt(casoSeleccionado, 3).toString();
         
-        return !(fecha.compareTo(fechaFin) == 1 || fecha.compareTo(fechaIni) == -1);
+        if(fechaIniCasoSeleccionado.compareTo(fecha) == 1)
+            return false;
+        
+        if(!"".equals(fechaFinCasoSeleccionado))
+            return fechaFinCasoSeleccionado.compareTo(fecha) == 1;
+        
+        return false;
     }
     
     private void jt_ExpertosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_ExpertosMouseReleased
@@ -710,6 +806,11 @@ public class G_Completa extends Screen
         
         tf_codCasoCol.setText(jt_Casos.getModel().getValueAt(jt_Casos.getSelectedRow(), 0).toString());
     }//GEN-LAST:event_jt_CasosMouseReleased
+
+    private void bt_RefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_RefrescarActionPerformed
+        
+        this.mostrarDatos();
+    }//GEN-LAST:event_bt_RefrescarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_Refrescar;

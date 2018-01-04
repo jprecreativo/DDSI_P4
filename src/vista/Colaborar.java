@@ -7,6 +7,7 @@ import controlador.manejaColabora;
 import controlador.manejaExperto;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import modelo.caso;
@@ -375,7 +376,10 @@ public class Colaborar extends Screen
     
     private void comprobarExperto() throws SQLException
     {
-        if(!new manejaExperto().existeExperto(tf_codExperto.getText()))
+        manejaExperto me = new manejaExperto();
+        experto e = me.existeExperto(tf_codExperto.getText());
+        
+        if(null == e)
         {
             JOptionPane.showMessageDialog(this, "El experto no existe, rellena sus datos.");
                     
@@ -394,17 +398,27 @@ public class Colaborar extends Screen
             JOptionPane.showMessageDialog(this, "El experto ya existe.");
             
             tf_nombreExperto.setEnabled(false);
+            tf_nombreExperto.setText(e.getCodExperto());
+            
             tf_especialidad.setEnabled(false);
+            tf_especialidad.setText(e.getEspecialidad());
+            
             cb_nacionalidad.setEnabled(false);
+            cb_nacionalidad.setSelectedItem(e.getPais());
+            
             cb_sexo.setEnabled(false);
+            cb_sexo.setSelectedItem(e.getSexo());
             
             existeExperto = true;
         }
     }
     
-    private void comprobarCaso() throws SQLException
+    private void comprobarCaso() throws SQLException, ParseException
     {
-        if(!new manejaCaso().existeCaso(tf_codCaso.getText()))
+        manejaCaso mc = new manejaCaso();
+        caso c = mc.existeCaso(tf_codCaso.getText());
+        
+        if(null == c)
         {
             JOptionPane.showMessageDialog(this, "El caso no existe, rellena sus datos.");
                     
@@ -420,8 +434,15 @@ public class Colaborar extends Screen
             JOptionPane.showMessageDialog(this, "El caso ya existe.");
             
             tf_nombreCaso.setEnabled(false);
+            tf_nombreCaso.setText(c.getNombre());
+            
             dc_fechaIni.setEnabled(false);
+            dc_fechaIni.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(c.getFechaInicio()));
+            
             dc_fechaFin.setEnabled(false);
+            
+            if(null != c.getFechaFin())
+                dc_fechaFin.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(c.getFechaFin()));
             
             existeCaso = true;
         }
@@ -440,8 +461,11 @@ public class Colaborar extends Screen
         if(!"".equals(fechaFin) && fechaIni.compareTo(fechaFin) == 1)
             throw new Exception("La fecha de fin ha de ser mayor o igual a la fecha de inicio del caso.");
         
-        if((!"".equals(fechaFin) && fecha.compareTo(fechaFin) == 1) || fecha.compareTo(fechaIni) == -1)
-            throw new Exception("La fecha de la colaboración ha de estar comprendida entre las fechas de inicio y fin del caso.");
+        if(fecha.compareTo(fechaIni) == -1)
+            throw new Exception("La fecha de la colaboración ha de ser mayor o igual a la fecha de inicio del caso.");
+        
+        if(!"".equals(fechaFin) && fechaFin.compareTo(fecha) == -1)
+            throw new Exception("La fecha de la colaboración ha de ser menor o igual a la fecha de fin del caso.");
     }
     
     private void bt_insertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_insertarActionPerformed
@@ -498,7 +522,7 @@ public class Colaborar extends Screen
             this.comprobarCaso();
         } 
         
-        catch (SQLException e) 
+        catch (SQLException | ParseException e) 
         {
             System.out.println("Error: " + e.getMessage());
         }
