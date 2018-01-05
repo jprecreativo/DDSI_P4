@@ -458,13 +458,13 @@ public class Colaborar extends Screen
         if(dc_fechaFin.getDate() != null)
             fechaFin = formato.format(dc_fechaFin.getDate());
         
-        if(!"".equals(fechaFin) && fechaIni.compareTo(fechaFin) == 1)
+        if(!"".equals(fechaFin) && fechaIni.compareTo(fechaFin) > 0)
             throw new Exception("La fecha de fin ha de ser mayor o igual a la fecha de inicio del caso.");
         
-        if(fecha.compareTo(fechaIni) == -1)
+        if(fecha.compareTo(fechaIni) < 0)
             throw new Exception("La fecha de la colaboración ha de ser mayor o igual a la fecha de inicio del caso.");
         
-        if(!"".equals(fechaFin) && fechaFin.compareTo(fecha) == -1)
+        if(!"".equals(fechaFin) && fechaFin.compareTo(fecha) < 0)
             throw new Exception("La fecha de la colaboración ha de ser menor o igual a la fecha de fin del caso.");
     }
     
@@ -498,7 +498,7 @@ public class Colaborar extends Screen
 
         catch (Exception e) 
         {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Error: " + e.getMessage());
         }
     }//GEN-LAST:event_bt_insertarActionPerformed
 

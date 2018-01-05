@@ -10,8 +10,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.caso;
@@ -113,12 +111,13 @@ public class G_Completa extends Screen
         DefaultTableModel tablaCasos = this.obtenerModelo("Casos");
         ArrayList<caso> casos = new manejaCaso().obtenerCasos();
         
-        for(caso c : casos)
+        casos.forEach((c) -> {
             if(null == c.getFechaFin())
                 tablaCasos.addRow(new Object[] {c.getCodCaso(), c.getNombre(), c.getFechaInicio().split(" ")[0], ""});
         
             else
                 tablaCasos.addRow(new Object[] {c.getCodCaso(), c.getNombre(), c.getFechaInicio().split(" ")[0], c.getFechaFin().split(" ")[0]});
+        });
     }
     
     private void mostrarColaboraciones() throws SQLException
@@ -684,9 +683,11 @@ public class G_Completa extends Screen
         
         try 
         {
-            new manejaCaso().insertaCaso(c);
-            
-            JOptionPane.showMessageDialog(this, "Caso insertado correctamente.", "Inserción realizada", JOptionPane.INFORMATION_MESSAGE);
+            if(new manejaCaso().insertaCaso(c))
+                JOptionPane.showMessageDialog(this, "Caso insertado correctamente.", "Inserción realizada", JOptionPane.INFORMATION_MESSAGE);
+                
+            else
+                JOptionPane.showMessageDialog(this, "El caso ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
         } 
         
         catch (SQLException e) 
@@ -718,42 +719,53 @@ public class G_Completa extends Screen
         String fechaIni = formato.format(dc_fechaIni.getDate());
         String fechaFin = formato.format(dc_fechaFin.getDate());
         
-        return !(fechaIni.compareTo(fechaFin) == 1);
+        return !(fechaIni.compareTo(fechaFin) > 0);
     }
     
-    private void insertarColaboración(String codExperto, String codCaso) throws ParseException
+    private boolean insertarColaboración(String codExperto, String codCaso) throws ParseException
     {
         if(this.comprobarFechaColabora())
         {
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
             String fecha = formato.format(dc_fecha.getDate());
-
             colabora c = new colabora(codExperto, codCaso, fecha, tf_des.getText());
 
             try 
             {
                 new manejaColabora().insertaColaboracion(c);
+                
+                return true;
             } 
 
             catch (SQLException e) 
             {
                 JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                
+                return false;
             }
         }       
 
         else
+        {
             JOptionPane.showMessageDialog(this, "Hay algún error con las fechas.", "Error", JOptionPane.ERROR_MESSAGE);
+            
+            return false;
+        }
     }
     
-    private void colaboraciónInsertada(String codExperto, String codCaso) throws SQLException, ParseException
+    private boolean colaboraciónInsertada(String codExperto, String codCaso) throws SQLException, ParseException
     {
         manejaColabora mc = new manejaColabora();
         
         if(!mc.existeColaboracion(codExperto, codCaso))
-            this.insertarColaboración(codExperto, codCaso);
+            return (this.insertarColaboración(codExperto, codCaso));
         
         else
+        {
             JOptionPane.showMessageDialog(this, "Ya existe la colaboración.", "Colaboración no insertada", JOptionPane.ERROR_MESSAGE);
+            
+            return false;
+        }
     }
     
     private void bt_insertarColaborarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_insertarColaborarActionPerformed
@@ -770,11 +782,12 @@ public class G_Completa extends Screen
             {
                 co.inicioTransaccion();
                 
-                this.colaboraciónInsertada(codExperto, codCaso);
+                boolean inserciónRealizada = this.colaboraciónInsertada(codExperto, codCaso);
                 
                 co.finTransaccionCommit();
                 
-                JOptionPane.showMessageDialog(this, "Colaboración insertada.", "Inserción realizada", JOptionPane.INFORMATION_MESSAGE);
+                if(inserciónRealizada)
+                    JOptionPane.showMessageDialog(this, "Colaboración insertada.", "Inserción realizada", JOptionPane.INFORMATION_MESSAGE);
             } 
             
             catch (SQLException | ParseException e1) 
@@ -803,11 +816,11 @@ public class G_Completa extends Screen
         String fechaIniCasoSeleccionado = tablaCasos.getValueAt(casoSeleccionado, 2).toString();
         String fechaFinCasoSeleccionado = tablaCasos.getValueAt(casoSeleccionado, 3).toString();
         
-        if(fechaIniCasoSeleccionado.compareTo(fecha) == 1)
+        if(fechaIniCasoSeleccionado.compareTo(fecha) > 0)
             return false;
         
         if(!"".equals(fechaFinCasoSeleccionado))
-            return fechaFinCasoSeleccionado.compareTo(fecha) == 1;
+            return fechaFinCasoSeleccionado.compareTo(fecha) >= 0;
         
         return false;
     }

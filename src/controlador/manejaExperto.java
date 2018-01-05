@@ -87,10 +87,16 @@ public class manejaExperto {
 
         ResultSet rs = ps.executeQuery();
         
-        ps.close();
-
         if(rs.next())
-            return (new experto(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+        {
+            experto e = new experto(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+            
+            ps.close();
+            
+            return e;
+        }
+        
+        ps.close();
         
         return null;
     }
