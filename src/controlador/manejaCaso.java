@@ -101,6 +101,20 @@ public class manejaCaso {
         
         return casos;
     }
+    
+    /***
+     * Elimina un caso de la BD.
+     * @param codCaso Código del caso a eliminar.
+     * @throws SQLException Se lanzará si algún problema con la eliminación.
+     */
+    public void eliminarCaso(String codCaso) throws SQLException
+    {
+        ps = conexionOracle.co.prepareStatement("DELETE FROM CASO_POLICIAL WHERE CODCASO = ?");
+        
+        ps.setString(1, codCaso);
+        ps.executeUpdate();
+        ps.close();
+    }
 }
 
 	 

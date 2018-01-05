@@ -86,6 +86,8 @@ public class manejaExperto {
         ps.setString(1, codExperto);
 
         ResultSet rs = ps.executeQuery();
+        
+        ps.close();
 
         if(rs.next())
             return (new experto(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
@@ -136,5 +138,19 @@ public class manejaExperto {
 
             return false;
         }
+    }
+    
+    /***
+     * Elimina un experto de la BD.
+     * @param codExperto Código del experto a eliminar.
+     * @throws java.sql.SQLException Se lenzará si algún problema con la eliminación.
+     */
+    public void eliminarExperto(String codExperto) throws SQLException
+    {
+        ps = conexionOracle.co.prepareStatement("DELETE FROM EXPERTO WHERE CODEXPERTO = ?");
+      
+        ps.setString(1, codExperto);
+        ps.executeUpdate();
+        ps.close();
     }
 }

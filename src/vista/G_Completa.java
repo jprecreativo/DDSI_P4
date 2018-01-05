@@ -260,6 +260,11 @@ public class G_Completa extends Screen
         jScrollPane2.setViewportView(jt_Expertos);
 
         bt_eliminarExperto.setText("Eliminar experto");
+        bt_eliminarExperto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_eliminarExpertoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -390,6 +395,11 @@ public class G_Completa extends Screen
         jScrollPane3.setViewportView(jt_Casos);
 
         bt_eliminarCaso.setText("Eliminar caso");
+        bt_eliminarCaso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_eliminarCasoActionPerformed(evt);
+            }
+        });
 
         bt_insertarCaso.setText("Insertar caso");
         bt_insertarCaso.addActionListener(new java.awt.event.ActionListener() {
@@ -518,6 +528,11 @@ public class G_Completa extends Screen
         });
 
         bt_eliminarColaborar.setText("Eliminar colaboración");
+        bt_eliminarColaborar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_eliminarColaborarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -811,6 +826,112 @@ public class G_Completa extends Screen
         
         this.mostrarDatos();
     }//GEN-LAST:event_bt_RefrescarActionPerformed
+
+    private void bt_eliminarExpertoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_eliminarExpertoActionPerformed
+        
+        int expertoSeleccionado = jt_Expertos.getSelectedRow();
+        
+        if(expertoSeleccionado == -1)
+            JOptionPane.showMessageDialog(this, "Selecciona un experto.", "Error", JOptionPane.ERROR_MESSAGE);
+        
+        else
+        {
+            String codExperto = jt_Expertos.getModel().getValueAt(expertoSeleccionado, 0).toString();
+            String mensaje = "¿Estás seguro de borrar al experto " + codExperto + "?";
+            int respuesta = JOptionPane.showConfirmDialog(this, mensaje, "¡Cuidado!", JOptionPane.YES_NO_OPTION);
+            
+            if(respuesta == JOptionPane.YES_OPTION)   
+            {
+                try 
+                {
+                    new manejaExperto().eliminarExperto(codExperto);
+                    
+                    mensaje = "Experto " + codExperto + " eliminado permanentemente.";
+                    
+                    JOptionPane.showMessageDialog(this, mensaje, "Eliminación satisfactoria", JOptionPane.INFORMATION_MESSAGE);
+                } 
+                
+                catch (SQLException e) 
+                {
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "Eliminación errónea", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            
+            else
+                JOptionPane.showMessageDialog(this, "El experto " + codExperto + " no se ha borrado.", "Eliminación cancelada", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_bt_eliminarExpertoActionPerformed
+
+    private void bt_eliminarCasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_eliminarCasoActionPerformed
+        
+        int casoSeleccionado = jt_Casos.getSelectedRow();
+        
+        if(casoSeleccionado == -1)
+            JOptionPane.showMessageDialog(this, "Selecciona un caso.", "Error", JOptionPane.ERROR_MESSAGE);
+        
+        else
+        {
+            String codCaso = jt_Casos.getModel().getValueAt(casoSeleccionado, 0).toString();
+            String mensaje = "¿Estás seguro de borrar el caso " + codCaso + "?";
+            int respuesta = JOptionPane.showConfirmDialog(this, mensaje, "¡Cuidado!", JOptionPane.YES_NO_OPTION);
+            
+            if(respuesta == JOptionPane.YES_OPTION)   
+            {
+                try 
+                {
+                    new manejaCaso().eliminarCaso(codCaso);
+                    
+                    mensaje = "Caso " + codCaso + " eliminado permanentemente.";
+                    
+                    JOptionPane.showMessageDialog(this, mensaje, "Eliminación satisfactoria", JOptionPane.INFORMATION_MESSAGE);
+                } 
+                
+                catch (SQLException e) 
+                {
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "Eliminación errónea", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            
+            else
+                JOptionPane.showMessageDialog(this, "El caso " + codCaso + " no se ha borrado.", "Eliminación cancelada", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_bt_eliminarCasoActionPerformed
+
+    private void bt_eliminarColaborarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_eliminarColaborarActionPerformed
+        
+        int colaboraciónSeleccionada = jt_Colaboraciones.getSelectedRow();
+        
+        if(colaboraciónSeleccionada == -1)
+            JOptionPane.showMessageDialog(this, "Selecciona una colaboración.", "Error", JOptionPane.ERROR_MESSAGE);
+        
+        else
+        {
+            String codExperto = jt_Colaboraciones.getModel().getValueAt(colaboraciónSeleccionada, 0).toString();
+            String codCaso = jt_Colaboraciones.getModel().getValueAt(colaboraciónSeleccionada, 1).toString();
+            String mensaje = "¿Estás seguro de borrar la colaboración seleccionada?";
+            int respuesta = JOptionPane.showConfirmDialog(this, mensaje, "¡Cuidado!", JOptionPane.YES_NO_OPTION);
+            
+            if(respuesta == JOptionPane.YES_OPTION)   
+            {
+                try 
+                {
+                    new manejaColabora().eliminarColaboración(codExperto, codCaso);
+                    
+                    mensaje = "Colaboración eliminada permanentemente.";
+                    
+                    JOptionPane.showMessageDialog(this, mensaje, "Eliminación satisfactoria", JOptionPane.INFORMATION_MESSAGE);
+                } 
+                
+                catch (SQLException e) 
+                {
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "Eliminación errónea", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            
+            else
+                JOptionPane.showMessageDialog(this, "La colaboración no se ha borrado.", "Eliminación cancelada", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_bt_eliminarColaborarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_Refrescar;

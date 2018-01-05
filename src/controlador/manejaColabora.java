@@ -98,5 +98,21 @@ public class manejaColabora
 
             return false;
         }
-    } 
+    }
+    
+    /***
+     * Borra una colaboración de la BD.
+     * @param codExperto Experto de la colaboración a eliminar.
+     * @param codCaso Caso de la colaboración a eliminar.
+     * @throws SQLException Se lanzará si ocurre alguna anomalía con la eliminación.
+     */
+    public void eliminarColaboración(String codExperto, String codCaso) throws SQLException
+    {
+        ps = conexionOracle.co.prepareStatement("DELETE FROM COLABORA WHERE CODEXPERTO = ? AND CODCASO = ?");
+        
+        ps.setString(1, codExperto);
+        ps.setString(2, codCaso);
+        ps.executeUpdate();
+        ps.close();
+    }
 }
