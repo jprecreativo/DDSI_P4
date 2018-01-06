@@ -753,11 +753,11 @@ public class G_Completa extends Screen
         }
     }
     
-    private boolean colaboraciónInsertada(String codExperto, String codCaso) throws SQLException, ParseException
+    private boolean colaboraciónInsertada(String codExperto, String codCaso, String fecha) throws SQLException, ParseException
     {
         manejaColabora mc = new manejaColabora();
         
-        if(!mc.existeColaboracion(codExperto, codCaso))
+        if(!mc.existeColaboracion(codExperto, codCaso, fecha))
             return (this.insertarColaboración(codExperto, codCaso));
         
         else
@@ -780,9 +780,12 @@ public class G_Completa extends Screen
         {
             try 
             {
+                SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+                String fecha = formato.format(dc_fecha.getDate());
+                
                 co.inicioTransaccion();
                 
-                boolean inserciónRealizada = this.colaboraciónInsertada(codExperto, codCaso);
+                boolean inserciónRealizada = this.colaboraciónInsertada(codExperto, codCaso, fecha);
                 
                 co.finTransaccionCommit();
                 
@@ -919,8 +922,6 @@ public class G_Completa extends Screen
         
         else
         {
-            String codExperto = jt_Colaboraciones.getModel().getValueAt(colaboraciónSeleccionada, 0).toString();
-            String codCaso = jt_Colaboraciones.getModel().getValueAt(colaboraciónSeleccionada, 1).toString();
             String mensaje = "¿Estás seguro de borrar la colaboración seleccionada?";
             int respuesta = JOptionPane.showConfirmDialog(this, mensaje, "¡Cuidado!", JOptionPane.YES_NO_OPTION);
             
@@ -928,7 +929,11 @@ public class G_Completa extends Screen
             {
                 try 
                 {
-                    new manejaColabora().eliminarColaboración(codExperto, codCaso);
+                    String codExperto = jt_Colaboraciones.getModel().getValueAt(colaboraciónSeleccionada, 0).toString();
+                    String codCaso = jt_Colaboraciones.getModel().getValueAt(colaboraciónSeleccionada, 1).toString();
+                    String fecha = jt_Colaboraciones.getModel().getValueAt(colaboraciónSeleccionada, 2).toString();
+                    
+                    new manejaColabora().eliminarColaboración(codExperto, codCaso, fecha);
                     
                     mensaje = "Colaboración eliminada permanentemente.";
                     

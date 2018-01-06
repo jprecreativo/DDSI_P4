@@ -353,12 +353,11 @@ public class Colaborar extends Screen
     private void colaboraciónInsertada() throws SQLException
     {
         manejaColabora mc = new manejaColabora();
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        String fecha = formato.format(dc_fecha.getDate());
             
-        if(!mc.existeColaboracion(tf_codExperto.getText(), tf_codCaso.getText()))
+        if(!mc.existeColaboracion(tf_codExperto.getText(), tf_codCaso.getText(), fecha))
         {
-            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-            String fecha = formato.format(dc_fecha.getDate());
-            
             mc.insertaColaboracion(new colabora(tf_codExperto.getText(), tf_codCaso.getText(), fecha, ta_des.getText()));
             
             co.finTransaccionCommit();

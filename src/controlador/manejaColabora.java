@@ -54,15 +54,17 @@ public class manejaColabora
     * Comprueba si existe una colaboración en la tabla de COLABORA dado su código
     * @param codExperto, codCaso caso
      * @param codCaso
+     * @param fecha
      * @return 
     * @throws SQLException si ocurre alguna anomalía
     */
-    public boolean existeColaboracion(String codExperto, String codCaso) throws SQLException 
+    public boolean existeColaboracion(String codExperto, String codCaso, String fecha) throws SQLException 
     {
-        ps = conexionOracle.co.prepareStatement("SELECT * FROM COLABORA WHERE CODEXPERTO = ? AND CODCASO = ?");
+        ps = conexionOracle.co.prepareStatement("SELECT * FROM COLABORA WHERE CODEXPERTO = ? AND CODCASO = ? AND FECHA = ?");
         
         ps.setString(1, codExperto);
         ps.setString(2, codCaso);
+        ps.setDate(3, Date.valueOf(fecha));
         
         ResultSet colaboración = ps.executeQuery();
         
@@ -104,14 +106,17 @@ public class manejaColabora
      * Borra una colaboración de la BD.
      * @param codExperto Experto de la colaboración a eliminar.
      * @param codCaso Caso de la colaboración a eliminar.
+     * @param fecha
      * @throws SQLException Se lanzará si ocurre alguna anomalía con la eliminación.
      */
-    public void eliminarColaboración(String codExperto, String codCaso) throws SQLException
+    public void eliminarColaboración(String codExperto, String codCaso, String fecha) throws SQLException
     {
-        ps = conexionOracle.co.prepareStatement("DELETE FROM COLABORA WHERE CODEXPERTO = ? AND CODCASO = ?");
+        ps = conexionOracle.co.prepareStatement("DELETE FROM COLABORA WHERE CODEXPERTO = ? AND CODCASO = ? AND FECHA = ?");
         
         ps.setString(1, codExperto);
         ps.setString(2, codCaso);
+        ps.setDate(3, Date.valueOf(fecha));
+        
         ps.executeUpdate();
         ps.close();
     }
