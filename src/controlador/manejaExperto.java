@@ -6,19 +6,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
-public class manejaExperto {
-    
-    
-    // Se crea el PreparedStatement como atributo de la clase manejaExperto para
-    // utilizarlo en los diferentes métodos
+/***
+ * Clase que maneja todas las operaciones relativas a la tabla EXPERTO de la BD.
+ * @author jprecreativo
+ */
+public class manejaExperto 
+{
     PreparedStatement ps = null;
     
     /***
-     * 
-     * @param s
-     * @return 
-     * @throws java.sql.SQLException 
+     * Valiéndose de una función almacenada en la BD, devuelve cuantos expertos hay del sexo especificado.
+     * @param s Sexo de los expertos que se quieren contar.
+     * @return El número de expertos del sexo especificado.
+     * @throws java.sql.SQLException Si se especifica mal el sexo o hay algún otro problema con la función.
      */
     public int sexoExperto(String s) throws SQLException
     {
@@ -41,12 +41,12 @@ public class manejaExperto {
         return sexo.getInt(1);
     }
     
-     /**
-    * Devuelve una lista con todos los expertos cuyo país se pase por parámetro
-    * @param pais
-    * @throws SQLException si ocurre alguna anomalía
-    * @return ArrayList<experto>
-    */
+     /***
+      * Devuelve una lista con todos los expertos cuyo país se pase por parámetro.
+      * @param pais País de los expertos.
+      * @throws SQLException Si ocurre alguna anomalía.
+      * @return Un ArrayList de expertos cuyo país sea el del parámetro.
+      */
     public ArrayList<experto> listaExpertosPorPais(String pais) throws SQLException 
     {
         if("...".equals(pais))
@@ -73,11 +73,11 @@ public class manejaExperto {
         
         return expertos;
     }    
-    /**
-    * Comprueba si existe un experto
-    * @param codExperto
-     * @return 
-    * @throws SQLException si ocurre alguna anomalía
+    /***
+     * Comprueba si existe un experto.
+     * @param codExperto Código del experto a comprobar.
+     * @return Si existe el experto, devuelve sus datos en un objeto 'experto', si no devuelve null. 
+     * @throws SQLException Si ocurre alguna anomalía.
      */
     public experto existeExperto(String codExperto) throws SQLException 
     {
@@ -101,10 +101,10 @@ public class manejaExperto {
         return null;
     }
     
-     /**
-    * inserta un experto
-    * @param exp
-     * @return
+    /***
+     * Inserta un experto.
+     * @param exp Objeto 'experto' a insertar.
+     * @return TRUE si se ha conseguido insertar el experto, FALSE en caso contrario.
      */
     public boolean insertaExperto(experto exp)
     {

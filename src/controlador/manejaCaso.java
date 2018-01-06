@@ -7,19 +7,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
-public class manejaCaso {
-    
-    // Crea un PreparedStatement como atributo de la clase manejaExperto para
-    // utilizarlo en los diferentes métodos
+/***
+ * Clase encargada de controlar las operaciones de la BD relativas a los casos.
+ * @author jprecreativo
+ */
+public class manejaCaso 
+{
     PreparedStatement ps = null;
 	 
-     /**
-    *  Comprueba si existe un caso en la tabla de CASO_POLICIAL dado un código de caso
-    * @param codCaso código del caso a buscar
-     * @return 
-    * @throws SQLException si ocurre alguna anomalía
-    */
+     /***
+      * Comprueba si existe un caso en la tabla de CASO_POLICIAL dado un código de caso.
+      * @param codCaso Código del caso a buscar.
+      * @return El caso, si existe, o null si el caso no existe.
+      * @throws SQLException Si ocurre alguna anomalía.
+      */
     public caso existeCaso(String codCaso) throws SQLException 
     {
         ps = conexionOracle.co.prepareStatement("SELECT * FROM CASO_POLICIAL WHERE CODCASO = ?");
@@ -34,13 +35,13 @@ public class manejaCaso {
         return null;
     }
     
-     /**
-    *  Inserta caso en la tabla de CASO_POLICIAL
-    * @param cs caso a insertar
-     * @return 
-    * @throws SQLException si ocurre alguna anomalía
-    */
-    public boolean insertaCaso (caso cs) throws SQLException  
+     /***
+      * Inserta un caso en la tabla de CASO_POLICIAL.
+      * @param cs Caso a insertar.
+      * @return TRUE si se ha insertado el caso, FALSE en cualquier otro caso.
+      * @throws SQLException Si ocurre alguna anomalía.
+      */
+    public boolean insertaCaso(caso cs) throws SQLException  
     {
         try 
         {

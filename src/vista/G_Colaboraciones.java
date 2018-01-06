@@ -7,14 +7,11 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * Pantalla para ver las colaboraciones de un caso en concreto.
  * @author jprecreativo
  */
 public class G_Colaboraciones extends Screen 
 {
-    /**
-     * Creates new form G_Colaboraciones
-     */
     public G_Colaboraciones() 
     {
         initComponents();
@@ -107,6 +104,9 @@ public class G_Colaboraciones extends Screen
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /***
+     * Rellena la tabla con los datos de las colaboraciones.
+     */
     private void rellenarTabla()
     {
         DefaultTableModel model = (DefaultTableModel) jt_datos.getModel();
@@ -115,6 +115,10 @@ public class G_Colaboraciones extends Screen
         this.obtenerColaboraciones(model);
     }
     
+    /***
+     * Borra el contenido de la tabla.
+     * @param model Modelo de la tabla.
+     */
     private void limpiarTabla(DefaultTableModel model)
     {
         if(model.getRowCount() > 0)
@@ -122,6 +126,10 @@ public class G_Colaboraciones extends Screen
                 model.removeRow(i);
     }
     
+    /***
+     * Obtiene las colaboraciones de un caso en concreto. Si el caso no existe, se le notifica al usuario.
+     * @param model Modelo de la tabla.
+     */
     private void obtenerColaboraciones(DefaultTableModel model)
     {
         try 

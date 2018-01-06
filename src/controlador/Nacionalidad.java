@@ -7,11 +7,15 @@ import java.sql.SQLException;
 import vista.Consultar;
 
 /**
- *
+ * Clase encargada de actualizar los expertos que se muestran dependiendo de la nacionalidad.
  * @author jprecreativo
  */
 public class Nacionalidad implements ItemListener
 {
+    /***
+     * Cuando en alguna interfaz se cambie la nacionalidad de un JComboBox, refrescará la información de su tabla.
+     * @param event Para saber que nacionalidad se ha establecido.
+     */
     @Override
     public void itemStateChanged(ItemEvent event) 
     {
@@ -29,6 +33,11 @@ public class Nacionalidad implements ItemListener
         }
     }
     
+    /***
+     * Obtiene las diferentes nacionalidades que hay en la BD.
+     * @return Un ResultSet con las nacionalidades.
+     * @throws SQLException Se lanzará si hay algún problema con la consulta SQL.
+     */
     public static ResultSet obtenerNacionalidades() throws SQLException
     {
         return conexionOracle.co.createStatement().executeQuery("SELECT DISTINCT PAIS FROM EXPERTO");

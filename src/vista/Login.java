@@ -8,14 +8,11 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Pantalla principal de la aplicación en la cual nos logueamos.
  * @author jprecreativo
  */
 public class Login extends Screen
 {  
-    /**
-     * Creates new form Login
-     */
     public Login() 
     {
         initComponents();
@@ -24,6 +21,9 @@ public class Login extends Screen
         this.setSubmit();
     }
     
+    /***
+     * Al darle a enter es como si se pulsara el botón de conectar.
+     */
     private void setSubmit()
     {
         Action enter = new AbstractAction("Enter") {
@@ -107,6 +107,11 @@ public class Login extends Screen
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /***
+     * Si el login es correcto, se conecta a la BD y abre la pantalla 'Opciones', si hay algún error se le notifica
+     * al usuario.
+     * @param evt NOT_USED
+     */
     private void bt_ConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_ConectarActionPerformed
         
         try

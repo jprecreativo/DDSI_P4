@@ -17,7 +17,7 @@ import modelo.colabora;
 import modelo.experto;
 
 /**
- *
+ * Pantalla que permite una gestión completa de la BD.
  * @author jprecreativo
  */
 public class G_Completa extends Screen 
@@ -36,6 +36,9 @@ public class G_Completa extends Screen
         this.mostrarDatos();
     }
     
+    /***
+     * Obtiene las diferentes nacionalidades de los expertos para ponerlas en 'cb_nacionalidad'.
+     */
     private void obtenerNacionalidades()
     {
         try 
@@ -54,6 +57,9 @@ public class G_Completa extends Screen
         }
     }
     
+    /***
+     * Muestra todos los expertos, casos y colaboraciones de la BD, en sus correspondientes tablas.
+     */
     private void mostrarDatos()
     {
         try 
@@ -69,6 +75,10 @@ public class G_Completa extends Screen
         }
     }
     
+    /***
+     * Limpia los datos de una tabla.
+     * @param datos Modelo de la tabla a limpiar.
+     */
     private void borrarDatos(DefaultTableModel datos)
     {
         if(datos.getRowCount() > 0)
@@ -76,6 +86,11 @@ public class G_Completa extends Screen
                 datos.removeRow(i);
     }
     
+    /***
+     * Para obtener el modelo de alguna de las tablas de la ventana.
+     * @param tabla Indica de qué tabla queremos el modelo.
+     * @return El modelo de la tabla seleccionada.
+     */
     private DefaultTableModel obtenerModelo(String tabla)
     {
         DefaultTableModel model;
@@ -94,6 +109,10 @@ public class G_Completa extends Screen
         return model;
     }
     
+    /***
+     * Obtiene y muestra los expertos.
+     * @throws SQLException Si hay algún problema al obtener los expertos de la BD.
+     */
     private void mostrarExpertos() throws SQLException
     {
         DefaultTableModel tablaExpertos = this.obtenerModelo("Expertos");
@@ -106,6 +125,10 @@ public class G_Completa extends Screen
                                                                     e.getEspecialidad()}));
     }
     
+    /***
+     * Obtiene y muestra los casos.
+     * @throws SQLException Si hay algún problema al obtener los casos de la BD.
+     */
     private void mostrarCasos() throws SQLException
     {
         DefaultTableModel tablaCasos = this.obtenerModelo("Casos");
@@ -120,6 +143,10 @@ public class G_Completa extends Screen
         });
     }
     
+    /***
+     * Obtiene y muestra las colaboraciones.
+     * @throws SQLException Si hay algún problema al obtener las colaboraciones de la BD.
+     */
     private void mostrarColaboraciones() throws SQLException
     {
         DefaultTableModel tablaColaboraciones = this.obtenerModelo("Colaboraciones");
@@ -672,6 +699,10 @@ public class G_Completa extends Screen
             JOptionPane.showMessageDialog(this, "Ocurrió un error, no se insertó el experto.", "Error", JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_bt_insertarExpertoActionPerformed
 
+    /***
+     * Inserta un caso.
+     * @param fechaFin Será la fecha de fin del caso o un String vacío si no hay fecha de fin.
+     */
     private void insertarCaso(String fechaFin)
     {
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
@@ -696,6 +727,11 @@ public class G_Completa extends Screen
         }
     }
     
+    /***
+     * Se llamará al presionar el botón de insertar un caso. Comprueba si el caso tiene fecha de fin o no y llama al
+     * método insertarCaso para realizar la inserción.
+     * @param evt NOT_USED.
+     */
     private void bt_insertarCasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_insertarCasoActionPerformed
         
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
@@ -713,6 +749,10 @@ public class G_Completa extends Screen
             this.insertarCaso("");
     }//GEN-LAST:event_bt_insertarCasoActionPerformed
 
+    /***
+     * Comprueba que la fecha de inicio de un caso no se mayor a la de fin. 
+     * @return TRUE si la fecha de inicio es menor o igual a la de fin, FALSE en caso contrario.
+     */
     private boolean comprobarFechaCaso()
     {
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
@@ -722,6 +762,13 @@ public class G_Completa extends Screen
         return !(fechaIni.compareTo(fechaFin) > 0);
     }
     
+    /***
+     * Intenta insertar una nueva colaboración.
+     * @param codExperto Código del experto de la colaboración.
+     * @param codCaso Código del caso de la colaboración.
+     * @return TRUE si se ha insertado la colaboración, FALSE en cualquier otro caso.
+     * @throws ParseException Se lanzará si no se puede "parsear" alguna fecha.
+     */
     private boolean insertarColaboración(String codExperto, String codCaso) throws ParseException
     {
         if(this.comprobarFechaColabora())
@@ -753,6 +800,15 @@ public class G_Completa extends Screen
         }
     }
     
+    /***
+     * Comprueba si la colaboración que se pretende insertar ya existe en la BD.
+     * @param codExperto Código del experto de la colaboración.
+     * @param codCaso Código del caso de la colaboración.
+     * @param fecha Fecha de la colaboración.
+     * @return TRUE si no existe la colaboración y se ha logrado insertar, FALSE en cualquier otro caso.
+     * @throws SQLException Si hay algún problema al comprobar si existe la colaboración.
+     * @throws ParseException Se lanzará si no se puede "parsear" alguna fecha.
+     */
     private boolean colaboraciónInsertada(String codExperto, String codCaso, String fecha) throws SQLException, ParseException
     {
         manejaColabora mc = new manejaColabora();
@@ -768,6 +824,10 @@ public class G_Completa extends Screen
         }
     }
     
+    /***
+     * Ejecuta las sentencias necesarias para insertar una colaboración. Será llamado al pulsar el botón correspondiente.
+     * @param evt NOT_USED.
+     */
     private void bt_insertarColaborarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_insertarColaborarActionPerformed
         
         String codExperto = tf_codExpertoCol.getText();
@@ -810,6 +870,11 @@ public class G_Completa extends Screen
         }
     }//GEN-LAST:event_bt_insertarColaborarActionPerformed
 
+    /***
+     * Comprueba que la fecha de una colaboración esté comprendida entre las fechas de inicio y fin del caso seleccionado.
+     * @return FALSE si no se cumple lo anteriormente descrito, TRUE en caso contrario.
+     * @throws ParseException Se lanzará si no se puede "parsear" alguna de las fechas.
+     */
     private boolean comprobarFechaColabora() throws ParseException
     {
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
@@ -828,21 +893,41 @@ public class G_Completa extends Screen
         return false;
     }
     
+    /***
+     * Escribe el código del experto seleccionado con el ratón en 'tf_codExpertoCol'.
+     * @param evt NOT_USED.
+     */
     private void jt_ExpertosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_ExpertosMouseReleased
         
         tf_codExpertoCol.setText(jt_Expertos.getModel().getValueAt(jt_Expertos.getSelectedRow(), 0).toString());
     }//GEN-LAST:event_jt_ExpertosMouseReleased
-
+    
+    /***
+     * Escribe el código del caso seleccionado con el ratón en 'tf_codCasoCol'.
+     * @param evt NOT_USED.
+     */
     private void jt_CasosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_CasosMouseReleased
         
         tf_codCasoCol.setText(jt_Casos.getModel().getValueAt(jt_Casos.getSelectedRow(), 0).toString());
     }//GEN-LAST:event_jt_CasosMouseReleased
 
+    /***
+     * Llama al método 'mostraDatos' para que se refresque la información mostrada en la interfaz. Se invoca cuando se
+     * presione el botón de refrescar.
+     * @param evt NOT_USED.
+     */
     private void bt_RefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_RefrescarActionPerformed
         
         this.mostrarDatos();
     }//GEN-LAST:event_bt_RefrescarActionPerformed
 
+    /***
+     * Se llama al pulsar el botón de eliminar experto y ejecuta las acciones pertinentes para borrar el experto que el
+     * usuario ha seleccionado. Si no se ha seleccionado ningún experto, se abre un diálogo de error, si se ha seleccionado
+     * más de un experto, se borrará el primeramente seleccionado. El método le pide confirmación al usuario, si el usuario
+     * no confirma el experto no se borra.
+     * @param evt NOT_USED.
+     */
     private void bt_eliminarExpertoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_eliminarExpertoActionPerformed
         
         int expertoSeleccionado = jt_Expertos.getSelectedRow();
@@ -878,6 +963,13 @@ public class G_Completa extends Screen
         }
     }//GEN-LAST:event_bt_eliminarExpertoActionPerformed
 
+    /***
+     * Se llama al pulsar el botón de eliminar caso y ejecuta las acciones pertinentes para borrar el caso que el
+     * usuario ha seleccionado. Si no se ha seleccionado ningún caso, se abre un diálogo de error, si se ha seleccionado
+     * más de un caso, se borrará el primeramente seleccionado. El método le pide confirmación al usuario, si el usuario
+     * no confirma el caso no se borra.
+     * @param evt NOT_USED.
+     */
     private void bt_eliminarCasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_eliminarCasoActionPerformed
         
         int casoSeleccionado = jt_Casos.getSelectedRow();
@@ -913,6 +1005,13 @@ public class G_Completa extends Screen
         }
     }//GEN-LAST:event_bt_eliminarCasoActionPerformed
 
+    /***
+     * Se llama al pulsar el botón de eliminar colaboración y ejecuta las acciones pertinentes para borrar la 
+     * colaboración que el usuario ha seleccionado. Si no se ha seleccionado ningúna colaboración, se abre un diálogo de 
+     * error, si se ha seleccionado más de una colaboración, se borrará la primeramente seleccionada. El método le pide 
+     * confirmación al usuario, si el usuario no confirma la colaboración no se borra.
+     * @param evt NOT_USED.
+     */
     private void bt_eliminarColaborarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_eliminarColaborarActionPerformed
         
         int colaboraciónSeleccionada = jt_Colaboraciones.getSelectedRow();

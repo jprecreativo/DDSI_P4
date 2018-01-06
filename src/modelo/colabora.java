@@ -1,23 +1,16 @@
 package modelo;
 
-/**
- * Colabora 
+/***
+ * Clase que se corresponde con la tabla 'COLABORA' de la BD.
+ * @author jprecreativo
  */
-
-public class colabora {
+public class colabora 
+{
     private String codExperto;
     private String codCaso;
     private String fecha;
     private String descripcionColaboracion;
 	
-     /**
-   * Constructor con parametros 
-     * @param ce
-     * @param cc
-     * @param f
-     * @param dc
-   * @ param ce, cc, f, dc
-    */
     public colabora(String ce, String cc, String f, String dc) 
     {
 	codExperto = ce;
@@ -26,59 +19,43 @@ public class colabora {
         descripcionColaboracion = dc;
     }
 
-    /**
-     * @return the codExperto
-     */
-    public String getCodExperto() {
+    public String getCodExperto() 
+    {
         return codExperto;
     }
 
-    /**
-     * @param codExperto the codExperto to set
-     */
-    public void setCodExperto(String codExperto) {
+    public void setCodExperto(String codExperto) 
+    {
         this.codExperto = codExperto;
     }
 
-    /**
-     * @return the codCaso
-     */
-    public String getCodCaso() {
+    public String getCodCaso() 
+    {
         return codCaso;
     }
 
-    /**
-     * @param codCaso the codCaso to set
-     */
-    public void setCodCaso(String codCaso) {
+    public void setCodCaso(String codCaso) 
+    {
         this.codCaso = codCaso;
     }
 
-    /**
-     * @return the fecha
-     */
-    public String getFecha() {
+    public String getFecha() 
+    {
         return fecha;
     }
 
-    /**
-     * @param fecha the fecha to set
-     */
-    public void setFecha(String fecha) {
+    public void setFecha(String fecha) 
+    {
         this.fecha = fecha;
     }
 
-    /**
-     * @return the descripcionColaboracion
-     */
-    public String getDescripcionColaboracion() {
+    public String getDescripcionColaboracion() 
+    {
         return descripcionColaboracion;
     }
 
-    /**
-     * @param descripcionColaboracion the descripcionColaboracion to set
-     */
-    public void setDescripcionColaboracion(String descripcionColaboracion) {
+    public void setDescripcionColaboracion(String descripcionColaboracion) 
+    {
         this.descripcionColaboracion = descripcionColaboracion;
     }
 }

@@ -19,10 +19,6 @@ public class Opciones extends Screen
 {
     private final conexionOracle co;
     
-    /**
-     * Creates new form Opciones
-     * @param co
-     */
     public Opciones(conexionOracle co) 
     {
         initComponents();

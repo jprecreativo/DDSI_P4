@@ -7,7 +7,7 @@ import vista.G_Completa;
 import vista.InsertarExperto;
 
 /**
- *
+ * Clase encargada de crear las distintas pantallas de la aplicación siguiendo el patrón 'Factory'.
  * @author jprecreativo
  */
 public abstract class Factory 
@@ -19,6 +19,10 @@ public abstract class Factory
     private static G_Colaboraciones g_colaboraciones = null;
     private static G_Completa g_completa = null;
     
+    /***
+     * Instanciará una ventana que se hará visible. Si ya existe esa ventana, previamente se cierra para volverla a abrir.
+     * @param screen Dependiendo de su valor, se creará una pantalla u otra.
+     */
     public static void factoryMethod(String screen)
     {
         switch(screen)

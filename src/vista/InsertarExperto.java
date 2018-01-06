@@ -8,14 +8,11 @@ import javax.swing.JOptionPane;
 import modelo.experto;
 
 /**
- *
+ * Ventana para insertar un experto.
  * @author jprecreativo
  */
 public class InsertarExperto extends Screen
 {
-    /**
-     * Creates new form Insertar
-     */
     public InsertarExperto() 
     {
         initComponents();
@@ -25,6 +22,9 @@ public class InsertarExperto extends Screen
         super.inicialize(this.getWidth(), this.getHeight(), "Insertar un experto");
     }
     
+    /***
+     * Obtiene las diferentes nacionalidades de los expertos para ponerlas en 'cb_nacionalidad'.
+     */
     private void obtenerNacionalidades()
     {
         try 
@@ -149,6 +149,10 @@ public class InsertarExperto extends Screen
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /***
+     * Inserta un experto en la BD a menos que haya algún problema, en cuyo caso se le notifica al usuario.
+     * @param evt NOT_USED.
+     */
     private void bt_insertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_insertarActionPerformed
         
         experto ex = new experto(tf_codExperto.getText(),

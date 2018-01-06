@@ -9,14 +9,11 @@ import javax.swing.table.DefaultTableModel;
 import modelo.experto;
 
 /**
- *
+ * Nos permite ver los expertos pot nacionalidades, a parte de poder contarlos por su sexo.
  * @author jprecreativo
  */
 public class Consultar extends Screen 
 {
-    /**
-     * Creates new form Consultar
-     */
     public Consultar()
     {
         initComponents();
@@ -27,6 +24,10 @@ public class Consultar extends Screen
         cb_nacionalidades.addItemListener(new Nacionalidad());
     }
     
+    /***
+     * Rellena la tabla con los expertos que se le pasan por parámetro. Borra cualquier contenido previo.
+     * @param expertos ArrayList de expertos que se mostrarán en la tabla.
+     */
     public static void rellenarTabla(ArrayList<experto> expertos)
     {
         DefaultTableModel model = (DefaultTableModel) jt_Datos.getModel();
@@ -42,6 +43,9 @@ public class Consultar extends Screen
                                                                     e.getEspecialidad()}));
     }
 
+    /***
+     * Obtiene las diferentes nacionalidades de los expertos para ponerlas en 'cb_nacionalidad'.
+     */
     private void obtenerNacionalidades()
     {
         try 
@@ -175,6 +179,10 @@ public class Consultar extends Screen
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /***
+     * Muestra en una etiqueta cuantos exppertos hay del sexo especificado.
+     * @param evt NOT_USED.
+     */
     private void bt_contarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_contarActionPerformed
        
         try 

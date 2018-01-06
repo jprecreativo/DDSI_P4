@@ -9,10 +9,12 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import oracle.jdbc.OracleTypes;
 
+/***
+ * Clase encargada de controlar las operaciones SQL relativas a las colaboraciones.
+ * @author jprecreativo
+ */
 public class manejaColabora 
 {
-    // Creamos un PreparedStatement como atributo de la clase manejaExperto para
-    // utilizarlo en los diferentes métodos
     PreparedStatement ps = null;
     
     /**
@@ -39,6 +41,12 @@ public class manejaColabora
         return colaboraciones;
     }
 
+    /***
+     * Utilizando un procedimiento almacenado en la BD, devuelve todas las colaboraciones de un caso en concreto.
+     * @param codCaso Código del caso del que se quieren saber las colaboraciones.
+     * @return Un ResultSet con la colaboraciones del caso especificado.
+     * @throws SQLException Se lanzará si hay algún problema al llamar al procedimiento almacenado.
+     */
     public ResultSet listaColaboradoresPorCaso(String codCaso) throws SQLException
     {
         CallableStatement pColaboradoresCaso = conexionOracle.co.prepareCall("{CALL pColaboradoresCaso(?,?)}");
@@ -50,14 +58,14 @@ public class manejaColabora
         return ((ResultSet) pColaboradoresCaso.getObject(2));
     }
    
-     /**
-    * Comprueba si existe una colaboración en la tabla de COLABORA dado su código
-    * @param codExperto, codCaso caso
-     * @param codCaso
-     * @param fecha
-     * @return 
-    * @throws SQLException si ocurre alguna anomalía
-    */
+     /***
+      * Comprueba si existe una colaboración en la tabla COLABORA.
+      * @param codExperto Código del experto de la colaboración.
+      * @param codCaso Código del caso de la colaboración.
+      * @param fecha Fecha de la colaboración
+      * @return TRUE si existe la colaboración, FALSE en caso contrario.
+      * @throws SQLException Si ocurre alguna anomalía,
+      */
     public boolean existeColaboracion(String codExperto, String codCaso, String fecha) throws SQLException 
     {
         ps = conexionOracle.co.prepareStatement("SELECT * FROM COLABORA WHERE CODEXPERTO = ? AND CODCASO = ? AND FECHA = ?");
@@ -71,12 +79,12 @@ public class manejaColabora
         return colaboración.next();
     }
     
-     /**
-    * Inserta una colaboración en la tabla COLABORA
-     * @param col
-     * @return 
-    * @throws SQLException si ocurre alguna anomalía
-    */
+     /***
+      * Inserta una colaboración en la tabla COLABORA.
+      * @param col Objeto 'colabora' con los datos de la colaboración a insertar.
+      * @return TRUE si se ha conseguido insertar la colaboración, FALSE si no.
+      * @throws SQLException Si ocurre alguna anomalía.
+      */
     public boolean insertaColaboracion(colabora col) throws SQLException 
     {
         try 
@@ -106,7 +114,7 @@ public class manejaColabora
      * Borra una colaboración de la BD.
      * @param codExperto Experto de la colaboración a eliminar.
      * @param codCaso Caso de la colaboración a eliminar.
-     * @param fecha
+     * @param fecha Fecha de la colaboración a eliminar.
      * @throws SQLException Se lanzará si ocurre alguna anomalía con la eliminación.
      */
     public void eliminarColaboración(String codExperto, String codCaso, String fecha) throws SQLException

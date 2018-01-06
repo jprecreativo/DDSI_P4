@@ -15,7 +15,7 @@ import modelo.colabora;
 import modelo.experto;
 
 /**
- *
+ * Pantalla que le permite al usuario insertar una nueva colaboración en la BD.
  * @author jprecreativo
  */
 public class Colaborar extends Screen
@@ -24,10 +24,6 @@ public class Colaborar extends Screen
     private boolean existeExperto;
     private boolean existeCaso;
 
-    /**
-     * Creates new form Colaborar
-     * @param co
-     */
     public Colaborar(conexionOracle co) 
     {
         initComponents();
@@ -40,6 +36,9 @@ public class Colaborar extends Screen
         ta_des.setWrapStyleWord(true);   // Se impide la división de palabras en el TestArea.
     }
     
+    /***
+     * Obtiene las diferentes nacionalidades de los expertos para ponerlas en 'cb_nacionalidad'.
+     */
     private void obtenerNacionalidades()
     {
         try 
@@ -312,6 +311,9 @@ public class Colaborar extends Screen
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /***
+     * Cuando se va a insertar la colaboración, comprueba si el experto existe y si no existe lo inserta.
+     */
     private void expertoInsertado()
     {
         if(!existeExperto)
@@ -328,6 +330,9 @@ public class Colaborar extends Screen
             }
     }
     
+    /***
+     * Cuando se va a insertar la colaboración, comprueba si el caso existe y si no existe lo inserta.
+     */
     private void casoInsertado() throws SQLException
     {
         if(!existeCaso)
@@ -350,6 +355,10 @@ public class Colaborar extends Screen
             }
     }
     
+    /***
+     * Comprueba si la colaboración a insertar ya existe, en cuyo caso no la inserta e intenta hacer un rollback.
+     * @throws SQLException Se lanzará si hay algún problema en la transacción.
+     */
     private void colaboraciónInsertada() throws SQLException
     {
         manejaColabora mc = new manejaColabora();
@@ -373,6 +382,11 @@ public class Colaborar extends Screen
         }
     }
     
+    /***
+     * Comprueba si un experto con un código en concreto ya existe en la BD. Si no existe, desbloquea los campos necesarios
+     * de la interfaz para permitirle al usuario rellenar los datos del experto que luego se insertará.
+     * @throws SQLException Se lanzará si hay algún problema a la hora de comprobar si existe el experto.
+     */
     private void comprobarExperto() throws SQLException
     {
         manejaExperto me = new manejaExperto();
@@ -412,6 +426,12 @@ public class Colaborar extends Screen
         }
     }
     
+    /***
+     * Comprueba si un caso con un código en concreto ya existe. De no existir, desbloquea los campos necearios para que el
+     * usuario rellene los datos del caso, que posteriormente será insertado.
+     * @throws SQLException Se lanza si hay algún prblema al comprobar el caso.
+     * @throws ParseException Se lanzará si hay algún problema al "parsear" la fecha del caso.
+     */
     private void comprobarCaso() throws SQLException, ParseException
     {
         manejaCaso mc = new manejaCaso();
@@ -447,6 +467,13 @@ public class Colaborar extends Screen
         }
     }
     
+    /***
+     * Comprueba que se satisfaga los siguientes requisitos:
+     * - La fecha de fin de un caso ha de ser mayor o igual a su fecha de inicio.
+     * - La fecha de una colaboración ha de ser mayor o igual a la fecha de inicio de un caso.
+     * - La fecha de una colaboración ha de ser menor o igual a la fecha de fin de un caso.
+     * @throws Exception Si se viola alguno de los requisitos se lanza una excepción para informar del problema.
+     */
     private void comprobarFechas() throws Exception
     {
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
@@ -467,6 +494,11 @@ public class Colaborar extends Screen
             throw new Exception("La fecha de la colaboración ha de ser menor o igual a la fecha de fin del caso.");
     }
     
+    /***
+     * Se ejecuta cuando pulsen el botón de insertar. Ejecuta las acciones necesarias para insertar una colaboración
+     * correctamente en la BD. Si no se puede insertar, se hará rollback.
+     * @param evt NOT_USED.
+     */
     private void bt_insertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_insertarActionPerformed
 
         try 
@@ -500,7 +532,11 @@ public class Colaborar extends Screen
             System.out.println("Error: " + e.getMessage());
         }
     }//GEN-LAST:event_bt_insertarActionPerformed
-
+    
+    /***
+     * Se ejecutará cuando se pulse el botón de comprobar experto. Llama al método que comprueba si ya existe el experto.
+     * @param evt NOT_USED.
+     */
     private void bt_comprobarExpertoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_comprobarExpertoActionPerformed
        
         try 
@@ -514,6 +550,10 @@ public class Colaborar extends Screen
         }
     }//GEN-LAST:event_bt_comprobarExpertoActionPerformed
 
+    /***
+     * Se ejecutará cuando se pulse el botón de comprobar caso. Llama al método que comprueba si ya existe el caso.
+     * @param evt NOT_USED.
+     */
     private void bt_comprobarCasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_comprobarCasoActionPerformed
         
         try 
